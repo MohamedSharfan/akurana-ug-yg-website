@@ -4,77 +4,77 @@ export default function Sub(){
     const cards=[{
         name:"N.H.F Hansa",
         university:"University of Peradeniya",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Hansa.jpg",
     },
     {
         name:"M.A.F Azka",
         university:"South Eastern",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Azka.jpg",
     },
     {
         name:"M.N Shafa Maryam",
         university:"University of Rajarata",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Shafa.jpg",
     },
     {
         name:"M.S Shamha",
         university:"University of Colombo",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/pp.jpg",
     },
     {
         name:"K.M Shimla",
         university:"University of Jaffna",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Shimla.jpg",
     },
     {
         name:"M.F.F Shuha",
         university:"University of Jaffna",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Shuha.jpg",
     },
     {
         name:"F Maryam",
         university:"University of Uvawellessa",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/pp.jpg",
     },
     {
-        name:"M.M.F Shuha",
+        name:"M.M.F Shamla",
         university:"South Eastern",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Shamla.jpg",
     },
     {
         name:"M.F.M Akmal",
         university:"University of Wayamba",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Akmal.jpg",
     },
     {
         name:"M.S.F Nadhiya",
         university:"University of Kelaniya",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Nadhiya.jpg",
     },
     {
         name:"R.M Leena Maryam",
         university:"University of Kelaniya",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Leena.jpg",
     },
     {
         name:"N.M Razim",
         university:"University of Ruhuna",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Razim.jpg",
     },
     {
         name:"H.M.S.M Aamir",
         university:"University of Wayamba",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Aamir.jpg",
     },
     {
         name:"M.M.F Mahisha",
         university:"South Eastern",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/Mahisha.jpg",
     },
     {
         name:"M.R.F Shamla",
         university:"University of Wayamba",
-        img:"https://lipsum.app/random/1600x900",
+        img:"/pp.jpg",
     },
 ];
 
