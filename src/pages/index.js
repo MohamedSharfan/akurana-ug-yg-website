@@ -7,13 +7,14 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-
+import Activities from "@/components/Activities";
 export default function Home() {
     return(
       <div className="body-back">
         <Navbar />
         <Hero />
         <About />
+        <Activities />
         <Contact />
         <Footer /> 
       </div>
