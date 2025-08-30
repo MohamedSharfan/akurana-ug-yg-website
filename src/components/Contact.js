@@ -22,6 +22,17 @@ export default function Contact(){
                         The Akurana Undergraduates & Young Graduates team is always ready to support and inspire the youth towards a brighter future.  
                         Contact us today and let’s make an impact together!
                     </p>
+                    <div className="d-flex gap-3 mt-3">
+                        <a href="https://www.instagram.com/akurana_ugyg?utm_source=ig_web_button_share_sheet&igsh=OWhsZ2E2bWg3Z3h0" target="_blank" className="text-danger fs-4">
+                            <i className="bi bi-instagram" style={{color: "rgba(210, 1, 60, 1)"}}></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/1aTvfkypc1/?mibextid=wwXIfr" target="_blank" className="text-primary fs-4">
+                            <i className="bi bi-facebook"></i>
+                        </a>
+                        <a href="https://whatsapp.com/channel/0029Va7v93qH5JM7MZ0WuI3m" target="_blank" className="text-info fs-4">
+                            <i className="bi bi-whatsapp" style={{color:"rgb(37, 202, 0)"}}></i>
+                        </a>
+                    </div>
                 </div>
                 <div className="col-lg-6 ">
                     <input type="hidden" name="access_key" value="e22974d7-d479-4aa8-b873-72995116eb73" />

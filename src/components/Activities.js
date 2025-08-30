@@ -1,4 +1,8 @@
+import { useRouter } from "next/router";
+
 export default function Activities() {
+  const router = useRouter();
+
   const activities = [
     {
       title: "Step Up After A/L Program",
@@ -49,7 +53,12 @@ export default function Activities() {
 
       <div className="activities-grid">
         {activities.map((activity, index) =>(
-            <div key={index} className="activity-card">
+            <div 
+              key={index}
+              className="activity-card"
+              onClick={()=> router.push(`/activities/${index}`)}
+              style={{cursor: "pointer"}}
+            >
                 <img src={activity.img} alt={activity.title} className="img-fluid"/>
                 <h3 className="text-light">{activity.title}</h3>
                 <p className="text-light">{activity.date}</p>
