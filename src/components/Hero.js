@@ -22,7 +22,7 @@ export default function Hero(){
     },[])
 
     return(
-        <div className="hero-container position-relative">
+        <div className="hero-container position-relative" id="home">
             <img 
                 key={heroCount} 
                 src={heroImages[heroCount]} 

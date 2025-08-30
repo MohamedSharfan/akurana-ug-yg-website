@@ -39,7 +39,7 @@ export default function Activities() {
   ];
 
   return (
-    <section className="container py-5">
+    <section className="container py-5" id="activities">
       <div className="text-center mb-5">
         <h1 className="text-light mb-3">Our Activities</h1>
         <p style={{ maxWidth: "600px", margin: "0 auto", color:"rgba(255, 255, 255, 0.6)" }}>

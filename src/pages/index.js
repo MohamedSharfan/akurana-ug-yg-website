@@ -8,6 +8,9 @@ import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Activities from "@/components/Activities";
+import Exco from "@/components/Exco";
+import Sub from "@/components/Sub";
+
 export default function Home() {
     return(
       <div className="body-back">
@@ -15,6 +18,8 @@ export default function Home() {
         <Hero />
         <About />
         <Activities />
+        <Exco />
+        <Sub />
         <Contact />
         <Footer /> 
       </div>

@@ -1,7 +1,17 @@
+import { useRef } from "react";
+
 export default function Contact(){
+
+    const handleSubmit = () => {
+        const form = document.querySelector("form"); // select the form
+        if (form) {
+            setTimeout(() => form.reset(), 1000); // small delay so Web3Forms receives data
+        }
+};
+
     return(
         <section id="contact" className="container py-4 mx-auto">
-        <form action="https://api.web3forms.com/submit" method="POST">
+        <form action="https://api.web3forms.com/submit" method="POST" onSubmit={handleSubmit}>
             <div id="contact-container" className="row align-items-center">
                 <div className="col-lg-6 mb-lg-0 text-lg-start text-center text-lg-start mb-4 text-light ">
                     <h2 className="fw-bold display-5 display-md-4">Contact Us</h2>
@@ -14,7 +24,7 @@ export default function Contact(){
                     </p>
                 </div>
                 <div className="col-lg-6 ">
-                    <input type="hidden" name="access_key" value="a6600b29-94b0-40bf-8d44-58229499778c" />
+                    <input type="hidden" name="access_key" value="e22974d7-d479-4aa8-b873-72995116eb73" />
                     
                     <div className="mb-3 text-start">  
                         <label htmlFor="name" className="form-label text-start text-light">Name</label>
