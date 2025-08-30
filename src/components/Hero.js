@@ -8,16 +8,16 @@ export default function Hero(){
         { text1: "Shaping", text2: "Bright Futures" }
     ];
     const heroImages = [
-        "/back1.png",
-        "/back2.png",
-        "/back3.png"
+        "/back1.jpeg",
+        "/back2.jpeg",
+        "/back3.jpeg"
     ];
     const [heroCount,setHeroCount] = useState(2);
 
     useEffect(()=>{
         const intrevel = setInterval(()=>{
             setHeroCount((count) => {return count===2?0:count+1});
-        },3000);
+        },5000);
         return()=> clearInterval(intrevel);
     },[])
 
@@ -28,10 +28,10 @@ export default function Hero(){
                 src={heroImages[heroCount]} 
                 alt={`back${heroCount+1}`} 
                 style={{width: "100%", height:"600px" }}
-                className="hero-image" />
+                className="img-fluid w-100 hero-image" />
             <div className="position-absolute top-50 start-50 translate-middle text-center">
-                <h1 className="hero_text1 display-4 fw-bold">{heroData[heroCount].text1}</h1>
-                <h1 className="hero_text2 display-5">{heroData[heroCount].text2}</h1>
+                <h1 className="heading display-4 fw-bold">Akurana Undergraduates and Youngraduates</h1>
+                <h1 className="hero_text1 display-4 display-md-3 display-lg-2 text-center">{heroData[heroCount].text1} {heroData[heroCount].text2} </h1>
             </div>
             <div className='hero-dot-play'>
                 <ul className='hero-dots'>

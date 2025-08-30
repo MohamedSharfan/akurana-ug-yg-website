@@ -1,13 +1,28 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-
-
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Dancing+Script:wght@400..700&family=Pacifico&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=The+Nautigal:wght@400;700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
 body{
-    font-family: Arial,sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 0;
-    background-color: rgb(255, 255, 255);
+    
 }
+.body-back{
+    @apply min-h-screen;
+    background-color: #030408;
+    background-image:
+    radial-gradient(1200px 800px at 10% 20%, rgba(45, 88, 255, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 80% 10%, rgba(255, 80, 120, 0.10), transparent 60%),
+    radial-gradient(700px 700px at 70% 75%, rgba(80, 255, 200, 0.08), transparent 60%),
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.35) 0 1px, transparent 1px 100%),
+    radial-gradient(circle at 70% 40%, rgba(255,255,255,0.25) 0 1px, transparent 1px 100%),
+    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.18) 0 1px, transparent 1px 100%),
+    repeating-radial-gradient(circle, rgba(255,255,255,0.08) 0 0.8px, transparent 1px 12px);
+    background-blend-mode: screen, screen, screen, normal, normal, normal, normal;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 
 .navbar{
     display: flex;
@@ -30,37 +45,48 @@ body{
     justify-content: center;
     padding: 0px 0px;
     margin: 0 20px;
+    color: rgb(255, 255, 255);
+}
+.nav-item:hover{
+    border-bottom: 2px solid white;
 }
 .hero_text1 {
-    font-family: "Poppins", sans-serif;
-    font-size: 60pt;
-    font-weight: 400;
-    color: rgba(255,255,255,0.5);
-    text-shadow: 0 4px 20px rgba(255,255,255,0.3);
-    letter-spacing: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 1.5rem;
+    padding: 10px 0px;
+    margin-top: 30px;
+    font-size: 16pt;
+    font-weight: 300;
+    letter-spacing: 4px;
 }
 
-.hero_text2 {
-    font-family: "Poppins", sans-serif;
-    font-size: 33px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.5);
+.heading {
+    font-family: "Cal Sans", sans-serif;
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: 5px solid black;
+    gap: 9px;
 }
-
 .hero-container{
     width: 100%;
     height: 600px;
     position: relative;
     overflow: hidden;
+    background-color: rgb(255, 255, 255);
 }
 
 .hero-image{
     width: 100%;
+    overflow: hidden;
     height: 600px;
     object-fit: cover;
     position: absolute;
     opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards;
+    animation: fadeIn 0.3s ease-in-out forwards;
+    filter: saturate(70%);
+    filter:grayscale(10%);
 }
 
 @keyframes fadeIn {
@@ -101,4 +127,52 @@ body{
 
 .hero-dot-orange {
     background-color: rgb(255, 204, 0); 
+}
+
+#about-container{
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(12px) saturate(180%); 
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    padding: 35px 35px;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    color: rgb(255, 255, 255);
+    box-shadow: 0 8px 32px 0 rgba(72, 72, 72, 0.37)
+}
+.group{
+    border-radius: 1.5rem;
+    border: 3px solid rgba(255, 255, 255,0.3);
+}
+
+#contact-container{
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    padding: 35px 30px;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+     
+}
+
+.glass-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 0.5rem;
+    color: #fff;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn{
+    background-color: #58000D;
+    border: 1px solid #58000D;
+    padding: 10px 18px;
+}
+.btn:hover{
+    background-color: #D4AF37;
 }

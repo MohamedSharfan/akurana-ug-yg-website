@@ -6,7 +6,7 @@ export default function Navbar () {
 
 
     return(
-        <nav className='navbar navbar-expand-lg fixed-top'>
+        <nav className='navbar navbar-expand-lg navbar-dark fixed-top'>
             <div className='container'>
                 <a href="#" className='navbar-brand'><img src="/logo.png" alt="Logo" style={{ width: '50px' }} /></a>
                 <button className='navbar-toggler' type='button' onClick={() => setIsOpen(!isOpen)} aria-controls='navbarNav' aria-expanded={isOpen} aria-label='Toggle navigation'>
