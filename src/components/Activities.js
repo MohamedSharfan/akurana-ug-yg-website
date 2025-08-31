@@ -5,40 +5,39 @@ export default function Activities() {
 
   const activities = [
     {
-      title: "Step Up After A/L Program",
-      date: "2024 - Auditorium Balika Maha Vidyalaya",
+      title: "Step Up After A/L Programme",
       desc: "A dynamic program guiding students beyond their A/Ls with workshops, mentorship, and hands-on activities to explore career paths and develop essential skills for the future.",
-      img: "https://lipsum.app/random/1600x900",
+      img: "/afteral3.jpeg",
     },
     {
-      title: "Step Up After A/L Program",
-      date: "2024 - Auditorium Balika Maha Vidyalaya",
-      desc: "A dynamic program guiding students beyond their A/Ls with workshops, mentorship, and hands-on activities.",
-      img: "https://lipsum.app/random/1600x900",
+      title: "Annual General Meeting",
+      desc: "Celebrating achievements, sharing future plans, and shaping the path for empowering the next generation.",
+      img: "/agm.jpeg",
     },
     {
-      title: "Step Up After A/L Program",
-      date: "2024 - Auditorium Balika Maha Vidyalaya",
-      desc: "Mentorship sessions helping students choose the right career path.",
-      img: "https://lipsum.app/random/1600x900",
+      title: "Before O/L Guidance Programme",
+      desc: "Interactive sessions designed to guide students before O/L exams, helping them discover their strengths and make informed career choices.",
+      img: "/beforeol.jpeg",
     },
     {
-      title: "Step Up After A/L Program",
-      date: "2024 - Auditorium Balika Maha Vidyalaya",
-      desc: "Engaging workshops and practical activities for youth empowerment.",
-      img: "https://lipsum.app/random/1600x900",
+      title: "After O/L Guidance Programme",
+      desc: "Empowering students after O/Ls with interactive workshops, career guidance, and essential skill-building activities.",
+      img: "/afterol2.jpeg",
     },
     {
-        title:"Step Up After A/L Program",
-        date:"2024-Auditorium Balika Maha Vidyalaya",
-        desc:"Engaging workshops and practical activities for youth empowerment.",
-        img:"https://lipsum.app/random/1600x900",
+        title:"Before A/L Programme",
+        desc:"Helping students prepare for A/Ls through focused sessions, career guidance, and skill development activities.",
+        img:"/beforeal5.jpeg",
     },
     {
-        title:"Step Up After A/L Program",
-        date:"2024-Auditorium Balika Maha Vidyalaya",
-        desc:"Engaging workshops and practical activities for youth empowerment.",
-        img:"https://lipsum.app/random/1600x900",
+        title:"Akurana UG & YG Annual Members' Get Together",
+        desc:"An exciting gathering to strengthen connections, share ideas, and celebrate our community spirit.",
+        img:"/get2.jpeg",
+    },
+    {
+        title:"Freshers' Welcome",
+        desc:"A warm welcome event to connect, share experiences, and celebrate new beginnings.",
+        img:"/fresher3.jpeg",
     }
   ];
 
@@ -61,8 +60,7 @@ export default function Activities() {
             >
                 <img src={activity.img} alt={activity.title} className="img-fluid"/>
                 <h3 className="text-light">{activity.title}</h3>
-                <p className="text-light">{activity.date}</p>
-                <p className="text-light">{activity.desc}</p>
+                <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
             </div>
         ))}
       </div>
