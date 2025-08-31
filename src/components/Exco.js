@@ -23,7 +23,7 @@ export default function Exco(){
         name:"M.F Saara",
         position:"Assistant Secretary",
         university:"University of Peradeniya",
-        img:"/Saara(1).jpg",
+        img:"/Saara.jpg",
     },
     {
         name:"E.J.M Muaaz",

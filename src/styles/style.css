@@ -199,3 +199,12 @@ body{
 .para{
     padding: 20px 0px;
 }
+
+.img-fade {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.img-fade.show {
+  opacity: 1;
+}
