@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
@@ -46,7 +46,7 @@ export default function Professionals() {
     }
   };
 
-  const filterProfessionals = () => {
+  const filterProfessionals = useCallback(() => {
     let filtered = [...professionals];
 
     // Filter by search term
@@ -64,7 +64,11 @@ export default function Professionals() {
     }
 
     setFilteredProfessionals(filtered);
-  };
+  }, [professionals, searchTerm, selectedExpertise]);
+
+  useEffect(() => {
+    filterProfessionals();
+  }, [filterProfessionals]);
 
   return (
     <div className="body-back">

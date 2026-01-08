@@ -542,6 +542,7 @@ export default function Admin() {
                     {preview && (
                       <div className="mb-4 text-center">
                         <label className="form-label text-white d-block">Preview</label>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={preview}
                           alt="Preview"
@@ -604,7 +605,7 @@ export default function Admin() {
                     borderRadius: '10px',
                   }}>
                     <i className="bi bi-info-circle me-2"></i>
-                    <strong>Tip:</strong> To change {activeTab === 'sub' ? 'a member' : 'the President or any position'}, use the "Edit" button on the existing member card below. Don't add a new member {activeTab === 'exco' ? 'with the same position' : ''} - edit the existing one instead!
+                    <strong>Tip:</strong> To change {activeTab === 'sub' ? 'a member' : 'the President or any position'}, use the &quot;Edit&quot; button on the existing member card below. Don&apos;t add a new member {activeTab === 'exco' ? 'with the same position' : ''} - edit the existing one instead!
                   </div>
 
                   <form onSubmit={handleExcoSubmit}>
@@ -766,13 +767,14 @@ export default function Admin() {
                     {((activeTab === 'exco' && members.length === 0) || (activeTab === 'sub' && subMembers.length === 0)) ? (
                       <div className="text-center py-5">
                         <p className="text-white" style={{ opacity: 0.7 }}>
-                          No members in database yet. Click "Import Current Members" to add the existing team, or manually add members using the form above.
+                          No members in database yet. Click &quot;Import Current Members&quot; to add the existing team, or manually add members using the form above.
                         </p>
                       </div>
                     ) : (
                       <div className="members-grid">
                         {(activeTab === 'sub' ? subMembers : members).map((member) => (
                           <div key={member._id} className="member-card">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={member.image || '/placeholder.jpg'}
                               alt={member.name}
@@ -995,6 +997,7 @@ export default function Admin() {
                         />
                         {profPreview && (
                           <div className="mt-3">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={profPreview}
                               alt="Preview"
@@ -1074,7 +1077,9 @@ export default function Admin() {
                               }}
                             >
                               {prof.image && (
-                                <img
+                                <>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
                                   src={prof.image}
                                   alt={prof.name}
                                   style={{
@@ -1085,6 +1090,7 @@ export default function Admin() {
                                     marginBottom: '10px',
                                   }}
                                 />
+                                </>
                               )}
                               <h6 className="text-white mb-1">{prof.name}</h6>
                               <p className="text-white-50 mb-1" style={{ fontSize: '0.9rem' }}>
