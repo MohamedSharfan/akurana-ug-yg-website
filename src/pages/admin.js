@@ -199,15 +199,15 @@ export default function Admin() {
       const data = await response.json();
 
       if (data.success) {
-        setMessage('✅ Image uploaded successfully!');
+        setMessage('Image uploaded successfully!');
         setImageFormData({ title: '', description: '', category: 'activities' });
         setSelectedFile(null);
         setPreview(null);
       } else {
-        setMessage('❌ Upload failed: ' + data.error);
+        setMessage('Upload failed: ' + data.error);
       }
     } catch (error) {
-      setMessage('❌ Error: ' + error.message);
+      setMessage('Error: ' + error.message);
     } finally {
       setUploading(false);
     }
@@ -265,17 +265,17 @@ export default function Admin() {
       const data = await response.json();
 
       if (data.success) {
-        setExcoMessage(`✅ Member ${editingMember ? 'updated' : 'added'} successfully!`);
+        setExcoMessage(`Member ${editingMember ? 'updated' : 'added'} successfully!`);
         setExcoFormData({ name: '', position: '', university: '', order: 0 });
         setExcoFile(null);
         setExcoPreview(null);
         setEditingMember(null);
         fetchMembers(activeTab === 'sub' ? 'sub' : 'exco');
       } else {
-        setExcoMessage('❌ Operation failed: ' + data.error);
+        setExcoMessage('Operation failed: ' + data.error);
       }
     } catch (error) {
-      setExcoMessage('❌ Error: ' + error.message);
+      setExcoMessage('Error: ' + error.message);
     } finally {
       setExcoUploading(false);
     }
@@ -303,13 +303,13 @@ export default function Admin() {
 
       const data = await response.json();
       if (data.success) {
-        setExcoMessage('✅ Member deleted successfully!');
+        setExcoMessage('Member deleted successfully!');
         fetchMembers(activeTab === 'sub' ? 'sub' : 'exco');
       } else {
-        setExcoMessage('❌ Delete failed: ' + data.error);
+        setExcoMessage('Delete failed: ' + data.error);
       }
     } catch (error) {
-      setExcoMessage('❌ Error: ' + error.message);
+      setExcoMessage('Error: ' + error.message);
     }
   };
 
@@ -388,17 +388,17 @@ export default function Admin() {
 
       const data = await response.json();
       if (data.success) {
-        setProfMessage(editingProfessional ? '✅ Professional updated successfully!' : '✅ Professional added successfully!');
+        setProfMessage(editingProfessional ? 'Professional updated successfully!' : 'Professional added successfully!');
         setProfFormData({ name: '', title: '', company: '', expertise: '', bio: '', whatsapp: '', linkedin: '', email: '' });
         setProfFile(null);
         setProfPreview(null);
         setEditingProfessional(null);
         fetchProfessionals();
       } else {
-        setProfMessage('❌ Error: ' + data.error);
+        setProfMessage('Error: ' + data.error);
       }
     } catch (error) {
-      setProfMessage('❌ Error: ' + error.message);
+      setProfMessage('Error: ' + error.message);
     } finally {
       setProfUploading(false);
     }
@@ -431,11 +431,11 @@ export default function Admin() {
 
       const data = await response.json();
       if (data.success) {
-        setProfMessage('✅ Professional deleted successfully!');
+        setProfMessage('Professional deleted successfully!');
         fetchProfessionals();
       }
     } catch (error) {
-      setProfMessage('❌ Error: ' + error.message);
+      setProfMessage('Error: ' + error.message);
     }
   };
 
