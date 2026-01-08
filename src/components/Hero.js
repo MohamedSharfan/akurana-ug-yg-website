@@ -29,9 +29,9 @@ export default function Hero(){
                 alt={`back${heroCount+1}`} 
                 style={{width: "100%", height:"600px" }}
                 className="img-fluid w-100 hero-image" />
-            <div className="position-absolute top-50 start-50 translate-middle text-center">
+            <div className="position-absolute top-50 start-50 translate-middle text-center" style={{zIndex: 2}}>
                 <h1 className="heading display-4 fw-bold">Akurana Undergraduates and Young Graduates</h1>
-                <h1 className="hero_text1 display-4 display-md-3 display-lg-2 text-center">{heroData[heroCount].text1} {heroData[heroCount].text2} </h1>
+                <h1 className="hero_text1 fs-6 fs-sm-5 fs-md-4 fs-lg-3 text-center">{heroData[heroCount].text1} {heroData[heroCount].text2} </h1>
             </div>
             <div className='hero-dot-play'>
                 <ul className='hero-dots'>
