@@ -131,7 +131,13 @@ return(
                 {cards.map((card,index)=>(
                     <div key={index} className="cardy">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={card.img} alt={card.name} className="img-fluid" />
+                        <img 
+                            src={card.img} 
+                            alt={card.name} 
+                            className="img-fluid" 
+                            loading="lazy"
+                            decoding="async"
+                        />
                         <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>
                         <p className="fs-7 fs-md-6 university">{card.university}</p>
                     </div>

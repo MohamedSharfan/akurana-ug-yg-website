@@ -144,6 +144,8 @@ export default function Professionals() {
                       src={prof.image || '/placeholder.jpg'}
                       alt={prof.name}
                       className="prof-image"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="prof-content">

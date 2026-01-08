@@ -102,7 +102,13 @@ export default function Activities() {
                 style={{cursor: "pointer"}}
               >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={activity.img} alt={activity.title} className="img-fluid"/>
+                  <img 
+                    src={activity.img} 
+                    alt={activity.title} 
+                    className="img-fluid"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <h3 className="text-light">{activity.title}</h3>
                   <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
               </div>
