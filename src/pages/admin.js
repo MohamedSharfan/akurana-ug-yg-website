@@ -980,7 +980,7 @@ export default function Admin() {
                       </div>
 
                       <div className="col-12 mb-3">
-                        <label className="form-label text-white">Profile Image {!editingProfessional && &apos;*&apos;}</label>
+                        <label className="form-label text-white">Profile Image {!editingProfessional && '*'}</label>
                         <input
                           type="file"
                           accept="image/*"

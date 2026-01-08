@@ -135,6 +135,7 @@ export default function Professionals() {
               {filteredProfessionals.map((prof) => (
                 <div key={prof._id} className="professional-card">
                   <div className="prof-image-container">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={prof.image || '/placeholder.jpg'}
                       alt={prof.name}

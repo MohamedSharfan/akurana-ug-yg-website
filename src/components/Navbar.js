@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function Navbar () {
     const[isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function Navbar () {
     return(
         <nav className='navbar navbar-expand-lg navbar-dark fixed-top'>
             <div className='container'>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <a href={isHomePage ? "#home" : "/"} className='navbar-brand'><img src="/logo.png" alt="Logo" style={{ width: '50px' }} /></a>
                 <button className='navbar-toggler' type='button' onClick={() => setIsOpen(!isOpen)} aria-controls='navbarNav' aria-expanded={isOpen} aria-label='Toggle navigation'>
                     <span className='navbar-toggler-icon'></span>
@@ -31,14 +33,14 @@ export default function Navbar () {
                             <a href={isHomePage ? "#contact" : "/#contact"} className='nav-link'>Contact</a>
                         </li>
                         <li className='nav-item'>
-                            <a href="/professionals" className='nav-link'>
+                            <Link href="/professionals" className='nav-link'>
                                 <i className="bi bi-briefcase-fill me-1"></i> Network
-                            </a>
+                            </Link>
                         </li>
                         <li className='nav-item'>
-                            <a href="/donate" className='donate-btn'>
+                            <Link href="/donate" className='donate-btn'>
                                 <i className="bi bi-heart-fill me-1"></i> Donate Us
-                            </a>
+                            </Link>
                         </li>     
                     </ul>
                 </div>

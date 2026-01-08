@@ -155,6 +155,7 @@ export default function ActivityDetails(){
             </Link>
             <div className="row">
                 <div className="col-12 mb-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                         key={imgCount}
                         src={activity.img[imgCount]}

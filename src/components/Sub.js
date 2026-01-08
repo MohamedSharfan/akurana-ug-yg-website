@@ -84,6 +84,7 @@ export default function Sub(){
 
     useEffect(() => {
         fetchMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchMembers = async () => {
@@ -129,6 +130,7 @@ return(
             <div className="exco-grid">
                 {cards.map((card,index)=>(
                     <div key={index} className="cardy">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={card.img} alt={card.name} className="img-fluid" />
                         <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>
                         <p className="fs-7 fs-md-6 university">{card.university}</p>
