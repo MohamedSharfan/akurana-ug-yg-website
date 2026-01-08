@@ -14,7 +14,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const form = formidable({});
+    const form = formidable({
+      maxFileSize: 50 * 1024 * 1024, // 50MB
+      maxFieldsSize: 50 * 1024 * 1024, // 50MB
+    });
     const [fields, files] = await form.parse(req);
 
     const file = files.image[0];

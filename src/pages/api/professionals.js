@@ -50,7 +50,10 @@ export default async function handler(req, res) {
   // POST - Add new professional
   else if (req.method === 'POST') {
     try {
-      const form = formidable({});
+      const form = formidable({
+        maxFileSize: 50 * 1024 * 1024, // 50MB
+        maxFieldsSize: 50 * 1024 * 1024, // 50MB
+      });
       const [fields, files] = await form.parse(req);
 
       const file = files.image ? files.image[0] : null;
@@ -99,7 +102,10 @@ export default async function handler(req, res) {
   // PUT - Update professional
   else if (req.method === 'PUT') {
     try {
-      const form = formidable({});
+      const form = formidable({
+        maxFileSize: 50 * 1024 * 1024, // 50MB
+        maxFieldsSize: 50 * 1024 * 1024, // 50MB
+      });
       const [fields, files] = await form.parse(req);
 
       const id = fields.id ? fields.id[0] : null;

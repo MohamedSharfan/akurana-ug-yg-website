@@ -6,6 +6,8 @@ import { ObjectId } from 'mongodb';
 export const config = {
   api: {
     bodyParser: false,
+    responseLimit: false,
+    sizeLimit: '50mb',
   },
 };
 
@@ -44,7 +46,10 @@ export default async function handler(req, res) {
   // POST - Add new member
   else if (req.method === 'POST') {
     try {
-      const form = formidable({});
+      const form = formidable({
+        maxFileSize: 50 * 1024 * 1024, // 50MB
+        maxFieldsSize: 50 * 1024 * 1024, // 50MB
+      });
       const [fields, files] = await form.parse(req);
 
       const file = files.image ? files.image[0] : null;
@@ -87,7 +92,10 @@ export default async function handler(req, res) {
   // PUT - Update member
   else if (req.method === 'PUT') {
     try {
-      const form = formidable({});
+      const form = formidable({
+        maxFileSize: 50 * 1024 * 1024, // 50MB
+        maxFieldsSize: 50 * 1024 * 1024, // 50MB
+      });
       const [fields, files] = await form.parse(req);
 
       const id = fields.id ? fields.id[0] : null;
