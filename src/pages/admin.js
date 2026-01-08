@@ -449,11 +449,11 @@ export default function Admin() {
   return (
     <div className="body-back">
       <Navbar />
-      <div className="container py-5" style={{ marginTop: '100px', minHeight: '100vh' }}>
+      <div className="container-fluid px-3 px-md-4 py-5" style={{ marginTop: '100px', minHeight: '100vh' }}>
         <div className="row justify-content-center">
-          <div className="col-lg-10 col-md-12">
+          <div className="col-12 col-xl-10">
             <div className="glass-card">
-              <h1 className="text-center mb-4 heading display-4">Admin Panel</h1>
+              <h1 className="text-center mb-3 mb-md-4 heading display-5 display-md-4">Admin Panel</h1>
               
               {/* Tab Navigation */}
               <div className="admin-tabs mb-4">
@@ -461,13 +461,13 @@ export default function Admin() {
                   className={`admin-tab ${activeTab === 'images' ? 'active' : ''}`}
                   onClick={() => setActiveTab('images')}
                 >
-                  <i className="bi bi-image me-2"></i>Manage Images
+                  <i className="bi bi-image me-2"></i><span className="d-none d-sm-inline">Manage </span>Images
                 </button>
                 <button
                   className={`admin-tab ${activeTab === 'exco' ? 'active' : ''}`}
                   onClick={() => setActiveTab('exco')}
                 >
-                  <i className="bi bi-people me-2"></i>Executive Committee
+                  <i className="bi bi-people me-2"></i><span className="d-none d-sm-inline">Executive </span>Committee
                 </button>
                 <button
                   className={`admin-tab ${activeTab === 'sub' ? 'active' : ''}`}
@@ -746,7 +746,7 @@ export default function Admin() {
 
                   {/* Members List */}
                   <div className="mt-5">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-3">
                       <h4 className="text-white mb-0">Current Members ({activeTab === 'sub' ? subMembers.length : members.length})</h4>
                       {((activeTab === 'exco' && members.length === 0) || (activeTab === 'sub' && subMembers.length === 0)) && (
                         <button

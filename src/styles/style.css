@@ -364,6 +364,7 @@ body{
 /* Admin Panel Styles */
 .admin-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
@@ -374,11 +375,15 @@ body{
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    padding: 12px 24px;
+    padding: 10px 16px;
     border-radius: 8px 8px 0 0;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
+    flex: 1 1 auto;
+    min-width: 140px;
+    text-align: center;
+    font-size: 0.95rem;
 }
 
 .admin-tab:hover {
@@ -388,6 +393,41 @@ body{
 .admin-tab.active {
     background: rgba(45, 88, 255, 0.3);
     border-bottom: 3px solid rgba(45, 88, 255, 0.8);
+}
+
+/* Mobile responsive tabs */
+@media (max-width: 768px) {
+    .admin-tabs {
+        gap: 8px;
+    }
+    
+    .admin-tab {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        min-width: 110px;
+    }
+    
+    .admin-tab i {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .admin-tab {
+        width: 100%;
+        min-width: auto;
+        border-radius: 8px;
+    }
+    
+    .admin-tab.active {
+        border-bottom: none;
+        border-left: 4px solid rgba(45, 88, 255, 0.8);
+    }
 }
 
 /* Admin Form Inputs - Liquid Glass Style */
@@ -471,6 +511,20 @@ body{
     margin-top: 20px;
 }
 
+@media (max-width: 768px) {
+    .members-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .members-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+}
+
 .member-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
@@ -478,6 +532,25 @@ body{
     border-radius: 12px;
     padding: 15px;
     transition: all 0.3s ease;
+}
+
+@media (max-width: 576px) {
+    .member-card {
+        padding: 12px;
+    }
+    
+    .member-card h5 {
+        font-size: 0.9rem;
+    }
+    
+    .member-card p {
+        font-size: 0.8rem !important;
+    }
+    
+    .member-card .btn {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
 }
 
 .member-card:hover {
@@ -721,5 +794,70 @@ body{
     
     .glass-card {
         padding: 20px;
+    }
+}
+
+/* Additional Admin Panel Responsive Improvements */
+@media (max-width: 768px) {
+    .glass-card h1 {
+        font-size: 2rem;
+    }
+    
+    .glass-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .glass-card h4 {
+        font-size: 1.1rem;
+    }
+    
+    /* Stack form buttons on mobile */
+    .glass-card .d-flex.gap-2 {
+        flex-direction: column !important;
+    }
+    
+    .glass-card .d-flex.gap-2 .btn {
+        width: 100%;
+    }
+    
+    /* Preview images responsive */
+    .glass-card img[alt="Preview"] {
+        max-width: 100% !important;
+        max-height: 250px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .glass-card {
+        padding: 15px;
+    }
+    
+    .glass-card h1 {
+        font-size: 1.75rem;
+    }
+    
+    .glass-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .glass-card .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .glass-card .form-control,
+    .glass-card .form-select {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    
+    .glass-card .btn {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    /* Alert boxes */
+    .glass-card .alert {
+        font-size: 0.85rem;
+        padding: 10px;
     }
 }
