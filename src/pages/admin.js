@@ -122,34 +122,67 @@ export default function Admin() {
     const staticMembers = type === 'sub' ? staticSubMembers : staticExcoMembers;
 
     try {
+      let successCount = 0;
+      let failedMembers = [];
+      
       for (const member of staticMembers) {
-        // Convert static image path to base64
-        const response = await fetch(member.img);
-        const blob = await response.blob();
-        const reader = new FileReader();
-        
-        await new Promise((resolve) => {
-          reader.onloadend = async () => {
-            const formData = new FormData();
-            const file = new File([blob], 'image.jpg', { type: blob.type });
-            formData.append('image', file);
-            formData.append('name', member.name);
-            formData.append('position', member.position || '');
-            formData.append('university', member.university);
-            formData.append('order', member.order);
-            formData.append('type', type);
+        try {
+          // Convert static image path to base64
+          const response = await fetch(member.img);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch image: ${member.img}`);
+          }
+          
+          const blob = await response.blob();
+          const reader = new FileReader();
+          
+          await new Promise((resolve, reject) => {
+            reader.onloadend = async () => {
+              try {
+                const formData = new FormData();
+                const file = new File([blob], 'image.jpg', { type: blob.type });
+                formData.append('image', file);
+                formData.append('name', member.name);
+                formData.append('position', member.position || '');
+                formData.append('university', member.university);
+                formData.append('order', member.order);
+                formData.append('type', type);
 
-            await fetch('/api/exco', {
-              method: 'POST',
-              body: formData,
-            });
-            resolve();
-          };
-          reader.readAsDataURL(blob);
-        });
+                const apiResponse = await fetch('/api/exco', {
+                  method: 'POST',
+                  body: formData,
+                });
+                
+                const result = await apiResponse.json();
+                if (!result.success) {
+                  throw new Error(result.error || 'Unknown error');
+                }
+                
+                successCount++;
+                console.log(`✅ Migrated: ${member.name}`);
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            };
+            reader.onerror = () => reject(new Error('Failed to read image'));
+            reader.readAsDataURL(blob);
+          });
+          
+          // Add small delay between uploads to prevent overwhelming server
+          await new Promise(resolve => setTimeout(resolve, 300));
+          
+        } catch (error) {
+          console.error(`Failed to migrate ${member.name}:`, error);
+          failedMembers.push(`${member.name} (${error.message})`);
+        }
       }
 
-      setExcoMessage('✅ All members migrated successfully!');
+      if (failedMembers.length > 0) {
+        setExcoMessage(`✅ Migrated ${successCount} members. ❌ Failed: ${failedMembers.join(', ')}`);
+      } else {
+        setExcoMessage(`✅ All ${successCount} members migrated successfully!`);
+      }
       fetchMembers(type);
     } catch (error) {
       setExcoMessage('❌ Migration failed: ' + error.message);
