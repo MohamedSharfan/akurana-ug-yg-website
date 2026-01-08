@@ -6,6 +6,45 @@ export default function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Default/fallback static activities
+  const fallbackActivities = [
+    {
+      title: "Step Up After A/L Programme",
+      desc: "A dynamic program guiding students beyond their A/Ls with workshops, mentorship, and hands-on activities to explore career paths and develop essential skills for the future.",
+      img: "/afteral3.jpeg",
+    },
+    {
+      title: "Annual General Meeting",
+      desc: "Celebrating achievements, sharing future plans, and shaping the path for empowering the next generation.",
+      img: "/agm.jpeg",
+    },
+    {
+      title: "Before O/L Guidance Programme",
+      desc: "Interactive sessions designed to guide students before O/L exams, helping them discover their strengths and make informed career choices.",
+      img: "/beforeol.jpeg",
+    },
+    {
+      title: "After O/L Guidance Programme",
+      desc: "Empowering students after O/Ls with interactive workshops, career guidance, and essential skill-building activities.",
+      img: "/afterol2.jpeg",
+    },
+    {
+        title:"Before A/L Programme",
+        desc:"Helping students prepare for A/Ls through focused sessions, career guidance, and skill development activities.",
+        img:"/beforeal5.jpeg",
+    },
+    {
+        title:"Akurana UG & YG Annual Members' Get Together",
+        desc:"An exciting gathering to strengthen connections, share ideas, and celebrate our community spirit.",
+        img:"/get2.jpeg",
+    },
+    {
+        title:"Freshers' Welcome",
+        desc:"A warm welcome event to connect, share experiences, and celebrate new beginnings.",
+        img:"/fresher3.jpeg",
+    }
+  ];
+
   useEffect(() => {
     fetchActivities();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -17,7 +56,7 @@ export default function Activities() {
       const data = await response.json();
       
       if (data.success && data.images.length > 0) {
-        // Map MongoDB images to activities format
+        // Database has images - use them (overrides static)
         const dbActivities = data.images.map((img) => ({
           title: img.title,
           desc: img.description || "No description available",
@@ -25,12 +64,13 @@ export default function Activities() {
         }));
         setActivities(dbActivities);
       } else {
-        // No activities in database
-        setActivities([]);
+        // Database empty - show default static content
+        setActivities(fallbackActivities);
       }
     } catch (error) {
       console.error('Error fetching activities:', error);
-      setActivities([]);
+      // Show default content on error
+      setActivities(fallbackActivities);
     } finally {
       setLoading(false);
     }

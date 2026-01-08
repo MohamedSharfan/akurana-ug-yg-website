@@ -4,6 +4,84 @@ export default function Sub(){
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Default/fallback static data
+    const fallbackCards = [{
+        name:"N.H.F Hansa",
+        university:"University of Peradeniya",
+        img:"/Hansa.jpg",
+    },
+    {
+        name:"M.A.F Azka",
+        university:"South Eastern",
+        img:"/Azka.jpg",
+    },
+    {
+        name:"M.N Shafa Maryam",
+        university:"University of Rajarata",
+        img:"/Shafa.jpg",
+    },
+    {
+        name:"M.S Shamha",
+        university:"University of Colombo",
+        img:"/pp.jpg",
+    },
+    {
+        name:"K.M Shimla",
+        university:"University of Jaffna",
+        img:"/Shimla.jpg",
+    },
+    {
+        name:"M.F.F Shuha",
+        university:"University of Jaffna",
+        img:"/Shuha.jpg",
+    },
+    {
+        name:"F Maryam",
+        university:"University of Uvawellessa",
+        img:"/pp.jpg",
+    },
+    {
+        name:"M.M.F Shamla",
+        university:"South Eastern",
+        img:"/Shamla.jpg",
+    },
+    {
+        name:"M.F.M Akmal",
+        university:"University of Wayamba",
+        img:"/Akmal.jpg",
+    },
+    {
+        name:"M.S.F Nadhiya",
+        university:"University of Kelaniya",
+        img:"/Nadhiya.jpg",
+    },
+    {
+        name:"R.M Leena Maryam",
+        university:"University of Kelaniya",
+        img:"/Leena.jpg",
+    },
+    {
+        name:"N.M Razim",
+        university:"University of Ruhuna",
+        img:"/Razim.jpg",
+    },
+    {
+        name:"H.M.S.M Aamir",
+        university:"University of Wayamba",
+        img:"/Aamir.jpg",
+    },
+    {
+        name:"M.M.F Mahisha",
+        university:"South Eastern",
+        img:"/Mahisha.jpg",
+    },
+    {
+        name:"M.R.F Shamla",
+        university:"University of Wayamba",
+        img:"/pp.jpg",
+    },
+];
+
     useEffect(() => {
         fetchMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -15,7 +93,7 @@ export default function Sub(){
             const data = await response.json();
             
             if (data.success && data.members.length > 0) {
-                // Map MongoDB members to cards format
+                // Database has members - use them (overrides static)
                 const dbMembers = data.members.map((member) => ({
                     name: member.name,
                     university: member.university,
@@ -23,12 +101,13 @@ export default function Sub(){
                 }));
                 setCards(dbMembers);
             } else {
-                // No members in database
-                setCards([]);
+                // Database empty - show default static content
+                setCards(fallbackCards);
             }
         } catch (error) {
             console.error('Error fetching sub committee members:', error);
-            setCards([]);
+            // Show default content on error
+            setCards(fallbackCards);
         } finally {
             setLoading(false);
         }
