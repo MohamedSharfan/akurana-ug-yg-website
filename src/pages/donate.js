@@ -117,7 +117,7 @@ export default function Donate() {
                             {/* Thank You Message */}
                             <div className="text-center mt-5">
                                 <p className="text-white" style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-                                    🙏 Thank you for your generosity and support! 🙏
+                                    Thank you for your generosity and support! 
                                 </p>
                                 <a href="/" className="back-home-btn mt-3">
                                     <i className="bi bi-house-fill me-2"></i>Back to Home

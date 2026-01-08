@@ -1,9 +1,13 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Activities() {
   const router = useRouter();
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
+  // Fallback static activities in case database is empty
+  const fallbackActivities = [
     {
       title: "Step Up After A/L Programme",
       desc: "A dynamic program guiding students beyond their A/Ls with workshops, mentorship, and hands-on activities to explore career paths and develop essential skills for the future.",
@@ -41,6 +45,36 @@ export default function Activities() {
     }
   ];
 
+  useEffect(() => {
+    fetchActivities();
+  }, []);
+
+  const fetchActivities = async () => {
+    try {
+      const response = await fetch('/api/images?category=activities');
+      const data = await response.json();
+      
+      if (data.success && data.images.length > 0) {
+        // Map MongoDB images to activities format
+        const dbActivities = data.images.map((img) => ({
+          title: img.title,
+          desc: img.description || "No description available",
+          img: img.image, // Base64 image from MongoDB
+        }));
+        setActivities(dbActivities);
+      } else {
+        // Use fallback if no images in database
+        setActivities(fallbackActivities);
+      }
+    } catch (error) {
+      console.error('Error fetching activities:', error);
+      // Use fallback on error
+      setActivities(fallbackActivities);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="container py-5" id="activities">
       <div className="text-center mb-5">
@@ -50,20 +84,29 @@ export default function Activities() {
         </p>
       </div>
 
-      <div className="activities-grid">
-        {activities.map((activity, index) =>(
-            <div 
-              key={index}
-              className="activity-card"
-              onClick={()=> router.push(`/activities/${index}`)}
-              style={{cursor: "pointer"}}
-            >
-                <img src={activity.img} alt={activity.title} className="img-fluid"/>
-                <h3 className="text-light">{activity.title}</h3>
-                <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
-            </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="text-center text-white py-5">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3">Loading activities...</p>
+        </div>
+      ) : (
+        <div className="activities-grid">
+          {activities.map((activity, index) =>(
+              <div 
+                key={index}
+                className="activity-card"
+                onClick={()=> router.push(`/activities/${index}`)}
+                style={{cursor: "pointer"}}
+              >
+                  <img src={activity.img} alt={activity.title} className="img-fluid"/>
+                  <h3 className="text-light">{activity.title}</h3>
+                  <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
+              </div>
+          ))}
+        </div>
+      )}
 
       <style jsx>{`
         .activities-grid {

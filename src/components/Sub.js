@@ -1,7 +1,11 @@
-
+import { useEffect, useState } from 'react';
 
 export default function Sub(){
-    const cards=[{
+    const [cards, setCards] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fallback static data
+    const fallbackCards = [{
         name:"N.H.F Hansa",
         university:"University of Peradeniya",
         img:"/Hansa.jpg",
@@ -78,21 +82,60 @@ export default function Sub(){
     },
 ];
 
+    useEffect(() => {
+        fetchMembers();
+    }, []);
+
+    const fetchMembers = async () => {
+        try {
+            const response = await fetch('/api/exco?type=sub');
+            const data = await response.json();
+            
+            if (data.success && data.members.length > 0) {
+                // Map MongoDB members to cards format
+                const dbMembers = data.members.map((member) => ({
+                    name: member.name,
+                    university: member.university,
+                    img: member.image || '/placeholder.jpg',
+                }));
+                setCards(dbMembers);
+            } else {
+                // Use fallback if no members in database
+                setCards(fallbackCards);
+            }
+        } catch (error) {
+            console.error('Error fetching sub committee members:', error);
+            // Use fallback on error
+            setCards(fallbackCards);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 return(
     <section className="container py-5">
         <div className="text-start mb-5">
             <h1 className="text-light mb-5">Sub Committee</h1>
         </div>
 
-        <div className="exco-grid">
-            {cards.map((card,index)=>(
-                <div key={index} className="cardy">
-                    <img src={card.img} alt={card.name} className="img-fluid" />
-                    <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>
-                    <p className="fs-7 fs-md-6 university">{card.university}</p>
+        {loading ? (
+            <div className="text-center text-white py-5">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>
-            ))}
-        </div>
+                <p className="mt-3">Loading sub committee members...</p>
+            </div>
+        ) : (
+            <div className="exco-grid">
+                {cards.map((card,index)=>(
+                    <div key={index} className="cardy">
+                        <img src={card.img} alt={card.name} className="img-fluid" />
+                        <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>
+                        <p className="fs-7 fs-md-6 university">{card.university}</p>
+                    </div>
+                ))}
+            </div>
+        )}
 
         <style jsx>
             {`
