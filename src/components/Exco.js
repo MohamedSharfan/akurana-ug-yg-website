@@ -4,22 +4,6 @@ export default function Exco(){
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Default/fallback static data
-    const fallbackCards = [
-        { name: "M.S.M Sharfan", position: "President", university: "University of Ruhuna", img: "/Sharfan.jpg" },
-        { name: "M.S.F Afra", position: "Vice President", university: "University of Peradeniya", img: "/Afra.jpg" },
-        { name: "M.R.A Sadique", position: "Secretary", university: "University of Colombo", img: "/Sadique.png" },
-        { name: "M.F Saara", position: "Assistant Secretary", university: "University of Peradeniya", img: "/Saara.jpg" },
-        { name: "E.J.M Muaaz", position: "Treasurer", university: "University of Moratuwa", img: "/Muzny.jpg" },
-        { name: "K.R.F Hafsa", position: "Assistant Treasurer", university: "University of Uvawellassa", img: "/Hafsa.jpg" },
-        { name: "M.A Ouff Mohamed", position: "Editor", university: "University of Sri Jayawardenapura", img: "/Ouff.jpg" },
-        { name: "M.F Zainab", position: "Junior Editor", university: "University of Peradeniya", img: "/Zainab.jpg" },
-        { name: "M.S.M Shadhir", position: "Event Coordinator", university: "University of Ruhuna", img: "/Shadhir.jpg" },
-        { name: "M.S Kadheeja", position: "Assistant Event Coordinator", university: "University of Rajarata", img: "/Kadeeja.jpg" },
-        { name: "R.M.F Rukaiya", position: "Members' Welfare Coordinator", university: "University of Kelaniya", img: "/Rukaiya.jpg" },
-        { name: "A.R Ifa", position: "Assistant Members' Welfare Coordinator", university: "University of Peradeniya", img: "/Ifa.jpg" },
-    ];
-
     useEffect(() => {
         fetchMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,10 +11,12 @@ export default function Exco(){
 
     const fetchMembers = async () => {
         try {
-            const response = await fetch('/api/exco');
+            const response = await fetch('/api/exco?type=exco');
             const data = await response.json();
             
-            if (data.success && data.members.length > 0) {
+            console.log('Exco API response:', data);
+            
+            if (data.success && data.members && data.members.length > 0) {
                 // Map MongoDB members to cards format
                 const dbMembers = data.members.map((member) => ({
                     name: member.name,
@@ -38,15 +24,16 @@ export default function Exco(){
                     university: member.university,
                     img: member.image || '/placeholder.jpg',
                 }));
+                console.log('Mapped exco members:', dbMembers);
                 setCards(dbMembers);
             } else {
-                // Database empty - show default static content
-                setCards(fallbackCards);
+                // No members in database
+                console.log('No exco members found in database');
+                setCards([]);
             }
         } catch (error) {
             console.error('Error fetching members:', error);
-            // Show default content on error
-            setCards(fallbackCards);
+            setCards([]);
         } finally {
             setLoading(false);
         }

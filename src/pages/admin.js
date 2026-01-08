@@ -66,6 +66,7 @@ export default function Admin() {
     try {
       const response = await fetch(`/api/exco?type=${type}`);
       const data = await response.json();
+      console.log(`Admin fetching ${type} members:`, data);
       if (data.success) {
         if (type === 'sub') {
           setSubMembers(data.members);
