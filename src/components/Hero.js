@@ -23,6 +23,7 @@ export default function Hero(){
 
     return(
         <div className="hero-container position-relative" id="home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
                 key={heroCount} 
                 src={heroImages[heroCount]} 

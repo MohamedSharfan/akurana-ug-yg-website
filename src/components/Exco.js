@@ -81,6 +81,7 @@ export default function Exco(){
 
     useEffect(() => {
         fetchMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchMembers = async () => {
@@ -127,6 +128,7 @@ return(
             <div className="exco-grid">
                 {cards.map((card,index)=>(
                     <div key={index} className="cardy">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={card.img} alt={card.name} className="img-fluid" />
                         <h4 className="text-light fs-6 fs-md-5">{card.position}</h4>
                         <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>

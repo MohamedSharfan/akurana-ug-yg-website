@@ -12,6 +12,7 @@ export default function About() {
                     </div>
                 
                     <div className="col-lg-6 text-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/img5.jpeg" alt="group" style={{width:"500px"}} className="img-fluid shadow group"/>
                     </div>
                 </div>

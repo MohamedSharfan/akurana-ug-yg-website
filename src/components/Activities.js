@@ -47,6 +47,7 @@ export default function Activities() {
 
   useEffect(() => {
     fetchActivities();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchActivities = async () => {
@@ -100,6 +101,7 @@ export default function Activities() {
                 onClick={()=> router.push(`/activities/${index}`)}
                 style={{cursor: "pointer"}}
               >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={activity.img} alt={activity.title} className="img-fluid"/>
                   <h3 className="text-light">{activity.title}</h3>
                   <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
