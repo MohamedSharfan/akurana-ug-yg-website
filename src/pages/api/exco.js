@@ -19,7 +19,15 @@ export default async function handler(req, res) {
     try {
       const { type } = req.query; // 'exco' or 'sub'
       
-      const query = type ? { type } : { type: { $ne: 'sub' } }; // Default to exco if not specified
+      let query;
+      if (type === 'sub') {
+        query = { type: 'sub' };
+      } else if (type === 'exco') {
+        query = { type: 'exco' };
+      } else {
+        // Default: get all exco members (not sub)
+        query = { $or: [{ type: 'exco' }, { type: { $exists: false } }] };
+      }
       
       const members = await collection
         .find(query)
