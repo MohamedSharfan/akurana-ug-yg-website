@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
 export default function Professionals() {
@@ -196,9 +197,9 @@ export default function Professionals() {
         )}
 
         <div className="text-center mt-5">
-          <a href="/" className="back-home-btn">
+          <Link href="/" className="back-home-btn">
             <i className="bi bi-house-fill me-2"></i>Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
 export default function Admin() {
@@ -979,7 +980,7 @@ export default function Admin() {
                       </div>
 
                       <div className="col-12 mb-3">
-                        <label className="form-label text-white">Profile Image {!editingProfessional && '*'}</label>
+                        <label className="form-label text-white">Profile Image {!editingProfessional && &apos;*&apos;}</label>
                         <input
                           type="file"
                           accept="image/*"
@@ -1138,9 +1139,9 @@ export default function Admin() {
               )}
 
               <div className="text-center mt-5">
-                <a href="/" className="back-home-btn">
+                <Link href="/" className="back-home-btn">
                   <i className="bi bi-house-fill me-2"></i>Back to Home
-                </a>
+                </Link>
               </div>
             </div>
           </div>
