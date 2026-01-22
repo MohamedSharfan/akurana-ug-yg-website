@@ -162,27 +162,27 @@ export default function Professionals() {
                       <p className="prof-bio">{prof.bio}</p>
                     )}
                     <div className="prof-actions">
-                      {prof.whatsapp && (
+                      {prof.linkedin && (
                         <a
-                          href={`https://wa.me/${prof.whatsapp.replace(/[^0-9]/g, '')}`}
+                          href={prof.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="connect-btn whatsapp-btn"
+                          className="connect-btn linkedin-btn"
                         >
-                          <i className="bi bi-whatsapp me-2"></i>
-                          Connect on WhatsApp
+                          <i className="bi bi-linkedin me-2"></i>
+                          Connect on LinkedIn
                         </a>
                       )}
                       <div className="social-links">
-                        {prof.linkedin && (
+                        {prof.whatsapp && (
                           <a
-                            href={prof.linkedin}
+                            href={`https://wa.me/${prof.whatsapp.replace(/[^0-9]/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="social-link"
-                            title="LinkedIn"
+                            title="WhatsApp"
                           >
-                            <i className="bi bi-linkedin"></i>
+                            <i className="bi bi-whatsapp"></i>
                           </a>
                         )}
                         {prof.email && (

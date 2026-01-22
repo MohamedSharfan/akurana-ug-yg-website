@@ -747,6 +747,19 @@ body{
     color: white;
 }
 
+.linkedin-btn {
+    background: linear-gradient(135deg, #0077B5, #00558C);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.linkedin-btn:hover {
+    background: linear-gradient(135deg, #0099DD, #006699);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4);
+    color: white;
+}
+
 .social-links {
     display: flex;
     gap: 10px;

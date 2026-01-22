@@ -76,8 +76,8 @@ return(
             {`
                 .exco-grid{
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-                    gap: 30px;
+                    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                    gap: 15px;
                 }
                 .cardy{
                     background: rgba(255, 255, 255, 0.1);
