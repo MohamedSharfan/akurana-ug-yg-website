@@ -6,13 +6,13 @@ export default function Donate() {
     const [copied, setCopied] = useState('');
 
     const bankDetails = {
-        accountNumber: "1234567890",
-        accountHolder: "Akurana UG & YG Association",
-        bankName: "Bank of Ceylon",
+        accountNumber: "153200150029416",
+        accountHolder: "EJM Muaaz",
+        bankName: "People’s bank",
         branch: "Akurana Branch"
     };
 
-    const whatsappNumber = "+94771234567";
+    const whatsappNumber = "+94788510792";
 
     const copyToClipboard = (text, field) => {
         navigator.clipboard.writeText(text);
