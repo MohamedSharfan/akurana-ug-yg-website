@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
 export default function Admin() {
-  const [activeTab, setActiveTab] = useState('images'); // 'images', 'exco', 'sub', or 'professionals'
+  const [activeTab, setActiveTab] = useState('images'); // 'images', 'exco', 'sub', 'professionals', or 'posts'
   
   // Image upload state
   const [imageFormData, setImageFormData] = useState({
@@ -52,6 +52,19 @@ export default function Admin() {
   const [professionals, setProfessionals] = useState([]);
   const [editingProfessional, setEditingProfessional] = useState(null);
 
+  // Posts state
+  const [postFormData, setPostFormData] = useState({
+    title: '',
+    description: '',
+    author: 'Akurana UG & YG',
+  });
+  const [postFile, setPostFile] = useState(null);
+  const [postPreview, setPostPreview] = useState(null);
+  const [postUploading, setPostUploading] = useState(false);
+  const [postMessage, setPostMessage] = useState('');
+  const [posts, setPosts] = useState([]);
+  const [editingPost, setEditingPost] = useState(null);
+
   useEffect(() => {
     if (activeTab === 'exco') {
       fetchMembers('exco');
@@ -59,6 +72,8 @@ export default function Admin() {
       fetchMembers('sub');
     } else if (activeTab === 'professionals') {
       fetchProfessionals();
+    } else if (activeTab === 'posts') {
+      fetchPosts();
     }
   }, [activeTab]);
 
@@ -480,6 +495,119 @@ export default function Admin() {
     setProfPreview(null);
   };
 
+  // Posts management functions
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('/api/posts');
+      const data = await response.json();
+      if (data.success) {
+        setPosts(data.posts);
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  const handlePostInputChange = (e) => {
+    setPostFormData({ ...postFormData, [e.target.name]: e.target.value });
+  };
+
+  const handlePostFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPostFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPostPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+    setPostUploading(true);
+    setPostMessage('');
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', postFormData.title);
+      formDataToSend.append('description', postFormData.description);
+      formDataToSend.append('author', postFormData.author);
+      if (postFile) {
+        formDataToSend.append('image', postFile);
+      }
+
+      let url = '/api/posts';
+      let method = 'POST';
+
+      if (editingPost) {
+        formDataToSend.append('id', editingPost._id);
+        method = 'PUT';
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        body: formDataToSend,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setPostMessage(editingPost ? 'Post updated successfully!' : 'Post added successfully!');
+        setPostFormData({ title: '', description: '', author: 'Akurana UG & YG' });
+        setPostFile(null);
+        setPostPreview(null);
+        setEditingPost(null);
+        fetchPosts();
+      } else {
+        setPostMessage('Error: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      setPostMessage('Error: ' + error.message);
+    } finally {
+      setPostUploading(false);
+    }
+  };
+
+  const handleEditPost = (post) => {
+    setEditingPost(post);
+    setPostFormData({
+      title: post.title,
+      description: post.description,
+      author: post.author || 'Akurana UG & YG',
+    });
+    setPostPreview(post.image);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDeletePost = async (id) => {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    try {
+      const response = await fetch('/api/posts', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setPostMessage('Post deleted successfully!');
+        fetchPosts();
+      }
+    } catch (error) {
+      setPostMessage('Error: ' + error.message);
+    }
+  };
+
+  const handleCancelPostEdit = () => {
+    setEditingPost(null);
+    setPostFormData({ title: '', description: '', author: 'Akurana UG & YG' });
+    setPostFile(null);
+    setPostPreview(null);
+  };
+
   return (
     <div className="body-back">
       <Navbar />
@@ -514,6 +642,12 @@ export default function Admin() {
                   onClick={() => setActiveTab('professionals')}
                 >
                   <i className="bi bi-briefcase me-2"></i>Professionals
+                </button>
+                <button
+                  className={`admin-tab ${activeTab === 'posts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('posts')}
+                >
+                  <i className="bi bi-newspaper me-2"></i>Posts
                 </button>
               </div>
 
@@ -1168,6 +1302,215 @@ export default function Admin() {
                                 >
                                   <i className="bi bi-trash"></i> Delete
                                 </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Posts Management Section */}
+              {activeTab === 'posts' && (
+                <div>
+                  <h3 className="text-white mb-4">
+                    {editingPost ? 'Edit Post' : 'Create New Post'}
+                  </h3>
+                  <form onSubmit={handlePostSubmit}>
+                    <div className="row">
+                      <div className="col-md-12 mb-3">
+                        <label className="form-label text-white">Title *</label>
+                        <input
+                          type="text"
+                          name="title"
+                          value={postFormData.title}
+                          onChange={handlePostInputChange}
+                          className="form-control"
+                          required
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: 'white',
+                          }}
+                          placeholder="Enter post title"
+                        />
+                      </div>
+
+                      <div className="col-md-12 mb-3">
+                        <label className="form-label text-white">Author</label>
+                        <input
+                          type="text"
+                          name="author"
+                          value={postFormData.author}
+                          onChange={handlePostInputChange}
+                          className="form-control"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: 'white',
+                          }}
+                          placeholder="Author name"
+                        />
+                      </div>
+
+                      <div className="col-12 mb-3">
+                        <label className="form-label text-white">Description *</label>
+                        <textarea
+                          name="description"
+                          value={postFormData.description}
+                          onChange={handlePostInputChange}
+                          className="form-control"
+                          rows="5"
+                          required
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: 'white',
+                          }}
+                          placeholder="Write your post content here..."
+                        ></textarea>
+                      </div>
+
+                      <div className="col-12 mb-3">
+                        <label className="form-label text-white">Post Image</label>
+                        <input
+                          type="file"
+                          onChange={handlePostFileChange}
+                          className="form-control"
+                          accept="image/*"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: 'white',
+                          }}
+                        />
+                      </div>
+
+                      {postPreview && (
+                        <div className="col-12 mb-3">
+                          <img
+                            src={postPreview}
+                            alt="Preview"
+                            style={{
+                              width: '100%',
+                              maxHeight: '300px',
+                              objectFit: 'cover',
+                              borderRadius: '10px',
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      <div className="col-12">
+                        <div className="d-flex gap-2">
+                          <button
+                            type="submit"
+                            className="btn btn-primary flex-grow-1"
+                            disabled={postUploading}
+                            style={{
+                              background: 'rgba(13, 110, 253, 0.3)',
+                              border: '1px solid rgba(13, 110, 253, 0.5)',
+                              color: 'white',
+                            }}
+                          >
+                            {postUploading ? 'Processing...' : editingPost ? 'Update Post' : 'Create Post'}
+                          </button>
+                          {editingPost && (
+                            <button
+                              type="button"
+                              onClick={handleCancelPostEdit}
+                              className="btn btn-secondary"
+                              style={{
+                                background: 'rgba(108, 117, 125, 0.3)',
+                                border: '1px solid rgba(108, 117, 125, 0.5)',
+                                color: 'white',
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                  {postMessage && (
+                    <div className={`alert ${postMessage.includes('Error') ? 'alert-danger' : 'alert-success'} mt-3`}>
+                      {postMessage}
+                    </div>
+                  )}
+
+                  <hr className="my-5" style={{ borderColor: 'rgba(255, 255, 255, 0.3)' }} />
+
+                  <div>
+                    <h3 className="text-white mb-4">Manage Posts</h3>
+                    {posts.length === 0 ? (
+                      <p className="text-white-50 text-center py-5">No posts yet. Create your first post above!</p>
+                    ) : (
+                      <div className="row g-3">
+                        {posts.map((post) => (
+                          <div key={post._id} className="col-12">
+                            <div
+                              className="p-3"
+                              style={{
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                borderRadius: '10px',
+                              }}
+                            >
+                              <div className="d-flex gap-3">
+                                {post.image && (
+                                  <img
+                                    src={post.image}
+                                    alt={post.title}
+                                    style={{
+                                      width: '100px',
+                                      height: '100px',
+                                      objectFit: 'cover',
+                                      borderRadius: '8px',
+                                    }}
+                                  />
+                                )}
+                                <div className="flex-grow-1">
+                                  <h5 className="text-white mb-1">{post.title}</h5>
+                                  <p className="text-white-50 mb-1" style={{ fontSize: '0.85rem' }}>
+                                    By {post.author || 'Akurana UG & YG'}
+                                  </p>
+                                  <p className="text-white-50 mb-2" style={{ fontSize: '0.85rem' }}>
+                                    <i className="bi bi-heart-fill me-1" style={{ color: '#ff4b64' }}></i>
+                                    {post.likes || 0} likes
+                                  </p>
+                                  <p className="text-white mb-2" style={{ fontSize: '0.9rem' }}>
+                                    {post.description.substring(0, 100)}
+                                    {post.description.length > 100 && '...'}
+                                  </p>
+                                  <div className="d-flex gap-2">
+                                    <button
+                                      onClick={() => handleEditPost(post)}
+                                      className="btn btn-sm btn-warning"
+                                      style={{
+                                        background: 'rgba(255, 193, 7, 0.3)',
+                                        border: '1px solid rgba(255, 193, 7, 0.5)',
+                                        color: 'white',
+                                      }}
+                                    >
+                                      <i className="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeletePost(post._id)}
+                                      className="btn btn-sm btn-danger"
+                                      style={{
+                                        background: 'rgba(220, 53, 69, 0.3)',
+                                        border: '1px solid rgba(220, 53, 69, 0.5)',
+                                        color: 'white',
+                                      }}
+                                    >
+                                      <i className="bi bi-trash"></i> Delete
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>

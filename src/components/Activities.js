@@ -99,18 +99,21 @@ export default function Activities() {
                 key={index}
                 className="activity-card"
                 onClick={()=> router.push(`/activities/${index}`)}
-                style={{cursor: "pointer"}}
               >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={activity.img} 
-                    alt={activity.title} 
-                    className="img-fluid"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <h3 className="text-light">{activity.title}</h3>
-                  <p className="" style={{color:"rgba(255,255,255,0.5)", paddingTop:"15px"}}>{activity.desc}</p>
+                  <div className="activity-image-container">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
+                      src={activity.img} 
+                      alt={activity.title} 
+                      className="activity-image"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="activity-content">
+                    <h3 className="activity-title">{activity.title}</h3>
+                    <p className="activity-desc">{activity.desc}</p>
+                  </div>
               </div>
           ))}
         </div>
@@ -128,8 +131,11 @@ export default function Activities() {
           backdrop-filter: blur(12px);
           border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 1.5rem;
-          padding: 20px;
+          padding: 0;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
+          cursor: pointer;
+          overflow: hidden;
+          text-align: center;
         }
 
         .activity-card:hover {
@@ -137,14 +143,83 @@ export default function Activities() {
           box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
         }
 
-        .activity-card img {
+        .activity-image-container {
           width: 100%;
-          height:300px;
-          object-fit:cover;
-          border-radius: 1.5rem;
-          margin-bottom: 15px;
+          height: 250px;
+          overflow: hidden;
         }
 
+        .activity-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+
+        .activity-card:hover .activity-image {
+          transform: scale(1.1);
+        }
+
+        .activity-content {
+          padding: 25px 20px;
+        }
+
+        .activity-title {
+          color: white;
+          font-size: 1.3rem;
+          font-weight: 600;
+          margin-bottom: 15px;
+          line-height: 1.4;
+        }
+
+        .activity-desc {
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.95rem;
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        @media (max-width: 768px) {
+          .activities-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+
+          .activity-image-container {
+            height: 200px;
+          }
+
+          .activity-content {
+            padding: 20px 15px;
+          }
+
+          .activity-title {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+          }
+
+          .activity-desc {
+            font-size: 0.9rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .activity-image-container {
+            height: 180px;
+          }
+
+          .activity-content {
+            padding: 15px 12px;
+          }
+
+          .activity-title {
+            font-size: 1rem;
+          }
+
+          .activity-desc {
+            font-size: 0.85rem;
+          }
+        }
       `}</style>
     </section>
   );
