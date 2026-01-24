@@ -233,6 +233,7 @@ export default function Professionals() {
           </Link>
         </div>
       </div>
+      </div>
     </>
   );
 }
