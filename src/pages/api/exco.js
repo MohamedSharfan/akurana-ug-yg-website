@@ -1,5 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
+import sharp from 'sharp';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
@@ -62,9 +63,18 @@ export default async function handler(req, res) {
       let imageData = null;
       if (file) {
         const fileData = fs.readFileSync(file.filepath);
-        const base64Image = fileData.toString('base64');
-        const mimeType = file.mimetype;
-        imageData = `data:${mimeType};base64,${base64Image}`;
+        
+        // Compress image for member photos (smaller size needed)
+        const compressedImage = await sharp(fileData)
+          .resize(400, 400, { // Profile pics don't need to be huge
+            fit: 'cover',
+            withoutEnlargement: true
+          })
+          .jpeg({ quality: 85 })
+          .toBuffer();
+        
+        const base64Image = compressedImage.toString('base64');
+        imageData = `data:image/jpeg;base64,${base64Image}`;
         fs.unlinkSync(file.filepath);
       }
 
@@ -122,9 +132,18 @@ export default async function handler(req, res) {
       // Only update image if new one is provided
       if (file) {
         const fileData = fs.readFileSync(file.filepath);
-        const base64Image = fileData.toString('base64');
-        const mimeType = file.mimetype;
-        updateData.image = `data:${mimeType};base64,${base64Image}`;
+        
+        // Compress image for member photos
+        const compressedImage = await sharp(fileData)
+          .resize(400, 400, {
+            fit: 'cover',
+            withoutEnlargement: true
+          })
+          .jpeg({ quality: 85 })
+          .toBuffer();
+        
+        const base64Image = compressedImage.toString('base64');
+        updateData.image = `data:image/jpeg;base64,${base64Image}`;
         fs.unlinkSync(file.filepath);
       }
 

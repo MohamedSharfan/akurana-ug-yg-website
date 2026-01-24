@@ -130,14 +130,17 @@ return(
             <div className="exco-grid">
                 {cards.map((card,index)=>(
                     <div key={index} className="cardy">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img 
-                            src={card.img} 
-                            alt={card.name} 
-                            className="img-fluid" 
-                            loading="lazy"
-                            decoding="async"
-                        />
+                        <div className="image-container">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img 
+                                src={card.img} 
+                                alt={card.name} 
+                                className="img-fluid member-img" 
+                                loading={index < 8 ? "eager" : "lazy"}
+                                decoding="async"
+                                onLoad={(e) => e.target.classList.add('loaded')}
+                            />
+                        </div>
                         <p className="namee mb-1 fs-6 fs-md-6">{card.name}</p>
                         <p className="fs-7 fs-md-6 university">{card.university}</p>
                     </div>
@@ -165,12 +168,34 @@ return(
                     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
                 }
 
-                .cardy img{
+                .image-container {
+                    position: relative;
+                    width: 100%;
+                    height: 150px;
+                    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                    border-radius: 1.5rem;
+                    margin-bottom: 15px;
+                    overflow: hidden;
+                }
+
+                @keyframes shimmer {
+                    0% { background-position: 200% 0; }
+                    100% { background-position: -200% 0; }
+                }
+
+                .member-img {
                     width: 100%;
                     height: 150px;
                     object-fit: cover;
                     border-radius: 1.5rem;
-                    margin-bottom: 15px;
+                    opacity: 0;
+                    transition: opacity 0.3s ease-in;
+                }
+
+                .member-img.loaded {
+                    opacity: 1;
                 }
                 .university{
                     color:rgba(255,255,255,0.5);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
@@ -71,7 +72,29 @@ export default function Professionals() {
   }, [filterProfessionals]);
 
   return (
-    <div className="body-back">
+    <>
+      <Head>
+        <title>Professional Network - Connect with Experts | Akurana UG & YG</title>
+        <meta name="description" content="Connect with experienced professionals across various fields including Software Engineering, Medicine, Engineering, Law, Business, and more. Network and grow your career in Sri Lanka." />
+        <meta name="keywords" content="professional network Sri Lanka, career mentors, software engineers Sri Lanka, doctors Sri Lanka, lawyers Sri Lanka, business professionals, engineering professionals, networking opportunities" />
+        <link rel="canonical" href="https://yourdomain.com/professionals" />
+        
+        <meta property="og:url" content="https://yourdomain.com/professionals" />
+        <meta property="og:title" content="Professional Network - Akurana UG & YG" />
+        <meta property="og:description" content="Connect with experienced professionals and grow your career." />
+        
+        {/* Structured Data - Professionals */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Professional Network",
+            "description": "Directory of professionals available for mentorship and networking",
+            "numberOfItems": filteredProfessionals.length
+          })}
+        </script>
+      </Head>
+      <div className="body-back">
       <Navbar />
       <div className="container py-5" style={{ marginTop: '100px', minHeight: '100vh' }}>
         <div className="text-center mb-5">
@@ -136,7 +159,7 @@ export default function Professionals() {
               Showing {filteredProfessionals.length} professional{filteredProfessionals.length !== 1 ? 's' : ''}
             </div>
             <div className="professionals-grid">
-              {filteredProfessionals.map((prof) => (
+              {filteredProfessionals.map((prof, index) => (
                 <div key={prof._id} className="professional-card">
                   <div className="prof-image-container">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -144,8 +167,9 @@ export default function Professionals() {
                       src={prof.image || '/placeholder.jpg'}
                       alt={prof.name}
                       className="prof-image"
-                      loading="lazy"
+                      loading={index < 6 ? "eager" : "lazy"}
                       decoding="async"
+                      onLoad={(e) => e.target.classList.add('loaded')}
                     />
                   </div>
                   <div className="prof-content">
@@ -209,6 +233,6 @@ export default function Professionals() {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1071,11 +1071,11 @@ export default function Admin() {
                           <option value="Software Engineering">Software Engineering</option>
                           <option value="Data Science">Data Science</option>
                           <option value="Business">Business</option>
+                          <option value="Medicine">Medicine</option>
+                          <option value="Engineering">Engineering</option>
+                          <option value="Education">Education</option>
                           <option value="Finance">Finance</option>
                           <option value="Marketing">Marketing</option>
-                          <option value="Healthcare">Healthcare</option>
-                          <option value="Education">Education</option>
-                          <option value="Engineering">Engineering</option>
                           <option value="Law">Law</option>
                           <option value="Other">Other</option>
                         </select>

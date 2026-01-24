@@ -1,5 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
+import sharp from 'sharp';
 import clientPromise from '../../../lib/mongodb';
 
 export const config = {
@@ -25,10 +26,27 @@ export default async function handler(req, res) {
     const description = fields.description ? fields.description[0] : '';
     const category = fields.category ? fields.category[0] : 'general';
 
-    // Read file as base64
+    // Read and compress image using Sharp
     const fileData = fs.readFileSync(file.filepath);
-    const base64Image = fileData.toString('base64');
     const mimeType = file.mimetype;
+    
+    let processedImage;
+    
+    // Compress image based on type
+    if (mimeType.startsWith('image/')) {
+      processedImage = await sharp(fileData)
+        .resize(1200, 1200, { // Max dimensions
+          fit: 'inside',
+          withoutEnlargement: true
+        })
+        .jpeg({ quality: 80 }) // Convert to JPEG with 80% quality
+        .toBuffer();
+    } else {
+      processedImage = fileData;
+    }
+
+    const base64Image = processedImage.toString('base64');
+    const finalMimeType = mimeType.startsWith('image/') ? 'image/jpeg' : mimeType;
 
     // Connect to MongoDB
     const client = await clientPromise;
@@ -40,8 +58,8 @@ export default async function handler(req, res) {
       title,
       description,
       category,
-      image: `data:${mimeType};base64,${base64Image}`,
-      mimeType,
+      image: `data:${finalMimeType};base64,${base64Image}`,
+      mimeType: finalMimeType,
       uploadedAt: new Date(),
     });
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
@@ -69,7 +70,28 @@ export default function Posts() {
   };
 
   return (
-    <div className="body-back">
+    <>
+      <Head>
+        <title>Community Posts - Latest News & Updates | Akurana UG & YG</title>
+        <meta name="description" content="Stay updated with the latest news, events, and announcements from Akurana UG & YG. Community posts, event updates, and youth empowerment initiatives." />
+        <meta name="keywords" content="Akurana news, youth events Sri Lanka, community updates, student announcements, educational programs, mentorship events, career workshops" />
+        <link rel="canonical" href="https://yourdomain.com/posts" />
+        
+        <meta property="og:url" content="https://yourdomain.com/posts" />
+        <meta property="og:title" content="Community Posts - Akurana UG & YG" />
+        <meta property="og:description" content="Latest news, events, and announcements from our community." />
+        
+        {/* Structured Data - Blog */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "Akurana UG & YG Community Posts",
+            "description": "News, events, and updates from Akurana youth community"
+          })}
+        </script>
+      </Head>
+      <div className="body-back">
       <Navbar />
       <div className="container py-5" style={{ marginTop: '100px', minHeight: '100vh' }}>
         <div className="text-center mb-5">
@@ -98,7 +120,7 @@ export default function Posts() {
           </div>
         ) : (
           <div className="posts-container">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <div key={post._id} className="post-card">
                 <div className="post-header">
                   <div className="post-author">
@@ -121,8 +143,9 @@ export default function Posts() {
                         src={post.image}
                         alt={post.title}
                         className="post-image"
-                        loading="lazy"
+                        loading={index < 2 ? "eager" : "lazy"}
                         decoding="async"
+                        onLoad={(e) => e.target.classList.add('loaded')}
                       />
                     </div>
                   )}
@@ -205,6 +228,16 @@ export default function Posts() {
           margin-top: 15px;
           border-radius: 10px;
           overflow: hidden;
+          position: relative;
+          background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+          min-height: 200px;
+        }
+
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
 
         .post-image {
@@ -213,6 +246,12 @@ export default function Posts() {
           max-height: 500px;
           object-fit: cover;
           display: block;
+          opacity: 0;
+          transition: opacity 0.3s ease-in;
+        }
+
+        .post-image.loaded {
+          opacity: 1;
         }
 
         .post-footer {
@@ -256,5 +295,6 @@ export default function Posts() {
         }
       `}</style>
     </div>
+    </>
   );
 }
