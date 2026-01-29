@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ugygakurana.lk';
+    const baseUrl = 'https://ugygakurana.lk';
     const currentDate = new Date().toISOString();
 
     // Static pages
