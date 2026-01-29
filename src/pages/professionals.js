@@ -34,12 +34,44 @@ export default function Professionals() {
   }, [searchTerm, selectedExpertise, professionals]);
 
   const fetchProfessionals = async () => {
+    // Check cache first
+    const cacheKey = 'professionals_v1';
+    const cacheTimeKey = 'professionals_time_v1';
+    const cacheExpiry = 30 * 60 * 1000; // 30 minutes
+    
     try {
-      const response = await fetch('/api/professionals');
+      const cachedData = localStorage.getItem(cacheKey);
+      const cachedTime = localStorage.getItem(cacheTimeKey);
+      
+      if (cachedData && cachedTime) {
+        const age = Date.now() - parseInt(cachedTime);
+        if (age < cacheExpiry) {
+          // Use cached data
+          const data = JSON.parse(cachedData);
+          setProfessionals(data);
+          setFilteredProfessionals(data);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.log('Cache read error:', err);
+    }
+    
+    try {
+      const response = await fetch('/api/professionals?thumbnail=true');
       const data = await response.json();
       if (data.success) {
         setProfessionals(data.professionals);
         setFilteredProfessionals(data.professionals);
+        
+        // Cache the data
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(data.professionals));
+          localStorage.setItem(cacheTimeKey, Date.now().toString());
+        } catch (err) {
+          console.log('Cache write error:', err);
+        }
       }
     } catch (error) {
       console.error('Error fetching professionals:', error);
@@ -136,11 +168,16 @@ export default function Professionals() {
         </div>
 
         {loading ? (
-          <div className="text-center text-white py-5">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <p className="mt-3">Loading professionals...</p>
+          <div className="professionals-grid">
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className="professional-card skeleton">
+                <div className="skeleton-image"></div>
+                <div className="skeleton-text skeleton-name"></div>
+                <div className="skeleton-text skeleton-title"></div>
+                <div className="skeleton-text skeleton-company"></div>
+                <div className="skeleton-badge"></div>
+              </div>
+            ))}
           </div>
         ) : filteredProfessionals.length === 0 ? (
           <div className="text-center py-5">
@@ -168,8 +205,9 @@ export default function Professionals() {
                       src={prof.image || '/placeholder.jpg'}
                       alt={prof.name}
                       className="prof-image"
-                      loading={index < 6 ? "eager" : "lazy"}
+                      loading={index < 4 ? "eager" : "lazy"}
                       decoding="async"
+                      fetchpriority={index < 4 ? "high" : "auto"}
                       onLoad={(e) => e.target.classList.add('loaded')}
                     />
                   </div>

@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   // GET - Fetch all professionals
   if (req.method === 'GET') {
     try {
-      const { expertise, search } = req.query;
+      const { expertise, search, thumbnail } = req.query;
       
       let query = {};
       
@@ -41,6 +41,36 @@ export default async function handler(req, res) {
         .sort({ createdAt: -1 })
         .toArray();
       
+      // If thumbnail is requested, reduce image quality for faster loading
+      if (thumbnail === 'true' && professionals.length > 0) {
+        const optimizedProfessionals = await Promise.all(professionals.map(async (prof) => {
+          if (prof.image && prof.image.startsWith('data:image')) {
+            try {
+              const base64Data = prof.image.split(',')[1];
+              const buffer = Buffer.from(base64Data, 'base64');
+              
+              // Create smaller thumbnail
+              const thumbnail = await sharp(buffer)
+                .resize(300, 300, { fit: 'cover' })
+                .jpeg({ quality: 70 })
+                .toBuffer();
+              
+              return {
+                ...prof,
+                image: `data:image/jpeg;base64,${thumbnail.toString('base64')}`
+              };
+            } catch (err) {
+              console.error('Error creating thumbnail:', err);
+              return prof;
+            }
+          }
+          return prof;
+        }));
+        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800');
+        return res.status(200).json({ success: true, professionals: optimizedProfessionals });
+      }
+      
+      res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800');
       res.status(200).json({ success: true, professionals });
     } catch (error) {
       console.error('Fetch error:', error);

@@ -993,3 +993,98 @@ body{
         letter-spacing: 0.3px;
     }
 }
+
+/* Skeleton Loading Styles */
+.skeleton {
+    pointer-events: none;
+}
+
+.skeleton-image,
+.skeleton-image-post {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.professional-card.skeleton .prof-image-container {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+    height: 16px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.skeleton-name {
+    width: 70%;
+    height: 24px;
+    margin-bottom: 8px;
+}
+
+.skeleton-title {
+    width: 85%;
+    height: 18px;
+}
+
+.skeleton-company {
+    width: 60%;
+}
+
+.skeleton-badge {
+    width: 100px;
+    height: 28px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-author {
+    width: 150px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.skeleton-date {
+    width: 100px;
+    height: 14px;
+}
+
+.skeleton-title {
+    width: 90%;
+    height: 24px;
+    margin-bottom: 15px;
+}
+
+.skeleton-desc {
+    width: 100%;
+    height: 16px;
+    margin-bottom: 10px;
+}
+
+.skeleton-desc:last-of-type {
+    width: 80%;
+}
+
+.skeleton-image-post {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+

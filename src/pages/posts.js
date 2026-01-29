@@ -13,11 +13,45 @@ export default function Posts() {
   }, []);
 
   const fetchPosts = async () => {
+    // Check cache first
+    const cacheKey = 'posts_v1';
+    const cacheTimeKey = 'posts_time_v1';
+    const cacheExpiry = 15 * 60 * 1000; // 15 minutes for posts (shorter than profiles)
+    
+    try {
+      const cachedData = localStorage.getItem(cacheKey);
+      const cachedTime = localStorage.getItem(cacheTimeKey);
+      
+      if (cachedData && cachedTime) {
+        const age = Date.now() - parseInt(cachedTime);
+        if (age < cacheExpiry) {
+          // Use cached data
+          const data = JSON.parse(cachedData);
+          setPosts(data);
+          setLoading(false);
+          // Still increment views in background
+          data.forEach(post => incrementView(post._id));
+          return;
+        }
+      }
+    } catch (err) {
+      console.log('Cache read error:', err);
+    }
+    
     try {
       const response = await fetch('/api/posts');
       const data = await response.json();
       if (data.success) {
         setPosts(data.posts);
+        
+        // Cache the data
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(data.posts));
+          localStorage.setItem(cacheTimeKey, Date.now().toString());
+        } catch (err) {
+          console.log('Cache write error:', err);
+        }
+        
         // Increment view count for each post
         data.posts.forEach(post => {
           incrementView(post._id);
@@ -99,11 +133,29 @@ export default function Posts() {
         </div>
 
         {loading ? (
-          <div className="text-center text-white py-5">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <p className="mt-3">Loading posts...</p>
+          <div className="posts-container">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="post-card skeleton">
+                <div className="post-header">
+                  <div className="post-author">
+                    <div className="skeleton-avatar"></div>
+                    <div>
+                      <div className="skeleton-text skeleton-author"></div>
+                      <div className="skeleton-text skeleton-date"></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="post-content">
+                  <div className="skeleton-text skeleton-title"></div>
+                  <div className="skeleton-text skeleton-desc"></div>
+                  <div className="skeleton-text skeleton-desc"></div>
+                  <div className="skeleton-image-post"></div>
+                </div>
+                <div className="post-footer">
+                  <div className="skeleton-badge"></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-5">
