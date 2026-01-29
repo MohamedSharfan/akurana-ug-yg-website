@@ -17,6 +17,10 @@ export default function Posts() {
       const data = await response.json();
       if (data.success) {
         setPosts(data.posts);
+        // Increment view count for each post
+        data.posts.forEach(post => {
+          incrementView(post._id);
+        });
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -25,25 +29,17 @@ export default function Posts() {
     }
   };
 
-  const handleLike = async (postId) => {
+  const incrementView = async (postId) => {
     try {
-      const response = await fetch('/api/posts', {
+      await fetch('/api/posts', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: postId, action: 'like' }),
+        body: JSON.stringify({ id: postId, action: 'view' }),
       });
-
-      const data = await response.json();
-      if (data.success) {
-        // Update the posts state with new like count
-        setPosts(posts.map(post => 
-          post._id === postId ? { ...post, likes: data.likes } : post
-        ));
-      }
     } catch (error) {
-      console.error('Error liking post:', error);
+      console.error('Error incrementing view:', error);
     }
   };
 
@@ -136,29 +132,46 @@ export default function Posts() {
                   <h4 className="post-title">{post.title}</h4>
                   <p className="post-description">{post.description}</p>
                   
-                  {post.image && (
-                    <div className="post-image-container">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="post-image"
-                        loading={index < 2 ? "eager" : "lazy"}
-                        decoding="async"
-                        onLoad={(e) => e.target.classList.add('loaded')}
-                      />
+                  {post.images && post.images.length > 0 && (
+                    <div className="post-images-container">
+                      {post.images.length === 1 ? (
+                        <div className="post-image-container">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={post.images[0]}
+                            alt={post.title}
+                            className="post-image"
+                            loading={index < 2 ? "eager" : "lazy"}
+                            decoding="async"
+                            onLoad={(e) => e.target.classList.add('loaded')}
+                          />
+                        </div>
+                      ) : (
+                        <div className="post-images-grid">
+                          {post.images.map((img, imgIndex) => (
+                            <div key={imgIndex} className="post-image-container">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={img}
+                                alt={`${post.title} - Image ${imgIndex + 1}`}
+                                className="post-image"
+                                loading={index < 2 && imgIndex < 2 ? "eager" : "lazy"}
+                                decoding="async"
+                                onLoad={(e) => e.target.classList.add('loaded')}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
 
                 <div className="post-footer">
-                  <button
-                    className="like-button"
-                    onClick={() => handleLike(post._id)}
-                  >
-                    <i className="bi bi-heart-fill me-2"></i>
-                    {post.likes || 0} {(post.likes || 0) === 1 ? 'Like' : 'Likes'}
-                  </button>
+                  <div className="views-count">
+                    <i className="bi bi-eye-fill me-2"></i>
+                    {post.views || 0} {(post.views || 0) === 1 ? 'View' : 'Views'}
+                  </div>
                 </div>
               </div>
             ))}
@@ -235,6 +248,21 @@ export default function Posts() {
           min-height: 200px;
         }
 
+        .post-images-container {
+          margin-top: 15px;
+        }
+
+        .post-images-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 10px;
+          margin-top: 15px;
+        }
+
+        .post-images-grid .post-image-container {
+          min-height: 150px;
+        }
+
         @keyframes shimmer {
           0% { background-position: 200% 0; }
           100% { background-position: -200% 0; }
@@ -250,6 +278,10 @@ export default function Posts() {
           transition: opacity 0.3s ease-in;
         }
 
+        .post-images-grid .post-image {
+          max-height: 300px;
+        }
+
         .post-image.loaded {
           opacity: 1;
         }
@@ -262,26 +294,19 @@ export default function Posts() {
           gap: 20px;
         }
 
-        .like-button {
-          background: rgba(255, 75, 100, 0.2);
-          border: 1px solid rgba(255, 75, 100, 0.4);
-          color: white;
-          padding: 8px 20px;
-          border-radius: 20px;
+        .views-count {
+          color: rgba(255, 255, 255, 0.8);
           font-size: 0.95rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
           display: flex;
           align-items: center;
+          padding: 8px 20px;
+          background: rgba(100, 150, 255, 0.2);
+          border-radius: 20px;
+          border: 1px solid rgba(100, 150, 255, 0.3);
         }
 
-        .like-button:hover {
-          background: rgba(255, 75, 100, 0.4);
-          transform: scale(1.05);
-        }
-
-        .like-button i {
-          color: #ff4b64;
+        .views-count i {
+          color: #6496ff;
         }
 
         @media (max-width: 768px) {

@@ -58,8 +58,8 @@ export default function Admin() {
     description: '',
     author: 'Akurana UG & YG',
   });
-  const [postFile, setPostFile] = useState(null);
-  const [postPreview, setPostPreview] = useState(null);
+  const [postFiles, setPostFiles] = useState([]);
+  const [postPreviews, setPostPreviews] = useState([]);
   const [postUploading, setPostUploading] = useState(false);
   const [postMessage, setPostMessage] = useState('');
   const [posts, setPosts] = useState([]);
@@ -513,14 +513,23 @@ export default function Admin() {
   };
 
   const handlePostFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPostFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPostPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setPostFiles(files);
+      const previews = [];
+      let loadedCount = 0;
+      
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          previews.push(reader.result);
+          loadedCount++;
+          if (loadedCount === files.length) {
+            setPostPreviews(previews);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -534,8 +543,11 @@ export default function Admin() {
       formDataToSend.append('title', postFormData.title);
       formDataToSend.append('description', postFormData.description);
       formDataToSend.append('author', postFormData.author);
-      if (postFile) {
-        formDataToSend.append('image', postFile);
+      
+      if (postFiles.length > 0) {
+        postFiles.forEach((file) => {
+          formDataToSend.append('images', file);
+        });
       }
 
       let url = '/api/posts';
@@ -556,8 +568,8 @@ export default function Admin() {
       if (data.success) {
         setPostMessage(editingPost ? 'Post updated successfully!' : 'Post added successfully!');
         setPostFormData({ title: '', description: '', author: 'Akurana UG & YG' });
-        setPostFile(null);
-        setPostPreview(null);
+        setPostFiles([]);
+        setPostPreviews([]);
         setEditingPost(null);
         fetchPosts();
       } else {
@@ -577,7 +589,7 @@ export default function Admin() {
       description: post.description,
       author: post.author || 'Akurana UG & YG',
     });
-    setPostPreview(post.image);
+    setPostPreviews(post.images || []);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -604,8 +616,8 @@ export default function Admin() {
   const handleCancelPostEdit = () => {
     setEditingPost(null);
     setPostFormData({ title: '', description: '', author: 'Akurana UG & YG' });
-    setPostFile(null);
-    setPostPreview(null);
+    setPostFiles([]);
+    setPostPreviews([]);
   };
 
   return (
@@ -1374,30 +1386,43 @@ export default function Admin() {
                       </div>
 
                       <div className="col-12 mb-3">
-                        <label className="form-label text-white">Post Image</label>
+                        <label className="form-label text-white">Post Images (Multiple)</label>
                         <input
                           type="file"
                           onChange={handlePostFileChange}
                           className="form-control"
                           accept="image/*"
+                          multiple
                           style={{
                             background: 'rgba(255, 255, 255, 0.1)',
                             border: '1px solid rgba(255, 255, 255, 0.3)',
                             color: 'white',
                           }}
                         />
+                        <small className="text-white-50">You can select multiple images</small>
                       </div>
 
-                      {postPreview && (
+                      {postPreviews.length > 0 && (
                         <div className="col-12 mb-3">
-                          <img
-                            src={postPreview}
-                            alt="Preview"
-                            style={{
-                              width: '100%',
-                              maxHeight: '300px',
-                              objectFit: 'cover',
-                              borderRadius: '10px',
+                          <label className="form-label text-white">Image Previews ({postPreviews.length})</label>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+                            {postPreviews.map((preview, idx) => (
+                              <img
+                                key={idx}
+                                src={preview}
+                                alt={`Preview ${idx + 1}`}
+                                style={{
+                                  width: '100%',
+                                  height: '150px',
+                                  objectFit: 'cover',
+                                  borderRadius: '10px',
+                                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
                             }}
                           />
                         </div>
@@ -1461,17 +1486,38 @@ export default function Admin() {
                               }}
                             >
                               <div className="d-flex gap-3">
-                                {post.image && (
-                                  <img
-                                    src={post.image}
-                                    alt={post.title}
-                                    style={{
-                                      width: '100px',
-                                      height: '100px',
-                                      objectFit: 'cover',
-                                      borderRadius: '8px',
-                                    }}
-                                  />
+                                {post.images && post.images.length > 0 && (
+                                  <div style={{ display: 'flex', gap: '5px', flexShrink: 0 }}>
+                                    {post.images.slice(0, 2).map((img, imgIdx) => (
+                                      <img
+                                        key={imgIdx}
+                                        src={img}
+                                        alt={`${post.title} ${imgIdx + 1}`}
+                                        style={{
+                                          width: '80px',
+                                          height: '80px',
+                                          objectFit: 'cover',
+                                          borderRadius: '8px',
+                                        }}
+                                      />
+                                    ))}
+                                    {post.images.length > 2 && (
+                                      <div style={{
+                                        width: '80px',
+                                        height: '80px',
+                                        borderRadius: '8px',
+                                        background: 'rgba(255, 255, 255, 0.1)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontSize: '1.2rem',
+                                        fontWeight: 'bold',
+                                      }}>
+                                        +{post.images.length - 2}
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                                 <div className="flex-grow-1">
                                   <h5 className="text-white mb-1">{post.title}</h5>
@@ -1479,8 +1525,8 @@ export default function Admin() {
                                     By {post.author || 'Akurana UG & YG'}
                                   </p>
                                   <p className="text-white-50 mb-2" style={{ fontSize: '0.85rem' }}>
-                                    <i className="bi bi-heart-fill me-1" style={{ color: '#ff4b64' }}></i>
-                                    {post.likes || 0} likes
+                                    <i className="bi bi-eye-fill me-1" style={{ color: '#6496ff' }}></i>
+                                    {post.views || 0} views
                                   </p>
                                   <p className="text-white mb-2" style={{ fontSize: '0.9rem' }}>
                                     {post.description.substring(0, 100)}

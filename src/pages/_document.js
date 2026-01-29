@@ -9,7 +9,12 @@ export default function Document() {
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta name="author" content="Akurana Undergraduates & Young Graduates" />
-        <link rel="icon" href="/favicon.ico" />
+        
+        {/* Favicon - Multiple formats for better browser support */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
+        <link rel="shortcut icon" href="/logo.png" />
         
         {/* Verification Tags (Add your verification codes here) */}
         {/* <meta name="google-site-verification" content="YOUR_GOOGLE_CODE" /> */}

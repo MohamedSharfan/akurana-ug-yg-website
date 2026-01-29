@@ -36,38 +36,41 @@ export default async function handler(req, res) {
       const form = formidable({
         maxFileSize: 50 * 1024 * 1024, // 50MB
         maxFieldsSize: 50 * 1024 * 1024, // 50MB
+        multiples: true,
       });
       const [fields, files] = await form.parse(req);
 
-      const file = files.image ? files.image[0] : null;
+      const imageFiles = files.images ? (Array.isArray(files.images) ? files.images : [files.images]) : [];
       const title = fields.title ? fields.title[0] : '';
       const description = fields.description ? fields.description[0] : '';
       const author = fields.author ? fields.author[0] : 'Akurana UG & YG';
 
-      let imageData = null;
-      if (file) {
-        const fileData = fs.readFileSync(file.filepath);
-        
-        // Compress image for posts
-        const compressedImage = await sharp(fileData)
-          .resize(1200, 1200, {
-            fit: 'inside',
-            withoutEnlargement: true
-          })
-          .jpeg({ quality: 80 })
-          .toBuffer();
-        
-        const base64Image = compressedImage.toString('base64');
-        imageData = `data:image/jpeg;base64,${base64Image}`;
-        fs.unlinkSync(file.filepath);
+      let imagesData = [];
+      if (imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const fileData = fs.readFileSync(file.filepath);
+          
+          // Compress image for posts
+          const compressedImage = await sharp(fileData)
+            .resize(1200, 1200, {
+              fit: 'inside',
+              withoutEnlargement: true
+            })
+            .jpeg({ quality: 80 })
+            .toBuffer();
+          
+          const base64Image = compressedImage.toString('base64');
+          imagesData.push(`data:image/jpeg;base64,${base64Image}`);
+          fs.unlinkSync(file.filepath);
+        }
       }
 
       const result = await collection.insertOne({
         title,
         description,
         author,
-        image: imageData,
-        likes: 0,
+        images: imagesData,
+        views: 0,
         createdAt: new Date(),
       });
 
@@ -82,33 +85,33 @@ export default async function handler(req, res) {
     }
   }
   
-  // PUT - Update post (like or edit)
+  // PUT - Update post (increment views or edit)
   else if (req.method === 'PUT') {
     try {
       // Check if it's a form data update or JSON update
       const contentType = req.headers['content-type'];
       
       if (contentType && contentType.includes('application/json')) {
-        // Handle like action
+        // Handle view increment action
         let body = '';
         for await (const chunk of req) {
           body += chunk.toString();
         }
         const { id, action } = JSON.parse(body);
 
-        if (action === 'like') {
+        if (action === 'view') {
           const post = await collection.findOne({ _id: new ObjectId(id) });
-          const newLikes = (post.likes || 0) + 1;
+          const newViews = (post.views || 0) + 1;
           
           await collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { likes: newLikes } }
+            { $set: { views: newViews } }
           );
 
           res.status(200).json({ 
             success: true, 
-            message: 'Post liked successfully',
-            likes: newLikes
+            message: 'View counted successfully',
+            views: newViews
           });
         }
       } else {
@@ -116,6 +119,7 @@ export default async function handler(req, res) {
         const form = formidable({
           maxFileSize: 50 * 1024 * 1024,
           maxFieldsSize: 50 * 1024 * 1024,
+          multiples: true,
         });
         const [fields, files] = await form.parse(req);
 
@@ -124,7 +128,7 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: 'Post ID is required' });
         }
 
-        const file = files.image ? files.image[0] : null;
+        const imageFiles = files.images ? (Array.isArray(files.images) ? files.images : [files.images]) : [];
         const title = fields.title ? fields.title[0] : '';
         const description = fields.description ? fields.description[0] : '';
         const author = fields.author ? fields.author[0] : 'Akurana UG & YG';
@@ -136,21 +140,25 @@ export default async function handler(req, res) {
           updatedAt: new Date(),
         };
 
-        if (file) {
-          const fileData = fs.readFileSync(file.filepath);
-          
-          // Compress image for posts
-          const compressedImage = await sharp(fileData)
-            .resize(1200, 1200, {
-              fit: 'inside',
-              withoutEnlargement: true
-            })
-            .jpeg({ quality: 80 })
-            .toBuffer();
-          
-          const base64Image = compressedImage.toString('base64');
-          updateData.image = `data:image/jpeg;base64,${base64Image}`;
-          fs.unlinkSync(file.filepath);
+        if (imageFiles.length > 0) {
+          let imagesData = [];
+          for (const file of imageFiles) {
+            const fileData = fs.readFileSync(file.filepath);
+            
+            // Compress image for posts
+            const compressedImage = await sharp(fileData)
+              .resize(1200, 1200, {
+                fit: 'inside',
+                withoutEnlargement: true
+              })
+              .jpeg({ quality: 80 })
+              .toBuffer();
+            
+            const base64Image = compressedImage.toString('base64');
+            imagesData.push(`data:image/jpeg;base64,${base64Image}`);
+            fs.unlinkSync(file.filepath);
+          }
+          updateData.images = imagesData;
         }
 
         await collection.updateOne(

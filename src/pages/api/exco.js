@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   // GET - Fetch all executive committee members
   if (req.method === 'GET') {
     try {
-      const { type } = req.query; // 'exco' or 'sub'
+      const { type, thumbnail } = req.query; // 'exco' or 'sub', thumbnail=true for smaller images
       
       let query;
       if (type === 'sub') {
@@ -37,6 +37,36 @@ export default async function handler(req, res) {
         .sort({ order: 1 }) // Sort by order field
         .toArray();
       
+      // If thumbnail is requested, reduce image quality for faster loading
+      if (thumbnail === 'true' && members.length > 0) {
+        const optimizedMembers = await Promise.all(members.map(async (member) => {
+          if (member.image && member.image.startsWith('data:image')) {
+            try {
+              const base64Data = member.image.split(',')[1];
+              const buffer = Buffer.from(base64Data, 'base64');
+              
+              // Create smaller thumbnail
+              const thumbnail = await sharp(buffer)
+                .resize(200, 200, { fit: 'cover' })
+                .jpeg({ quality: 70 })
+                .toBuffer();
+              
+              return {
+                ...member,
+                image: `data:image/jpeg;base64,${thumbnail.toString('base64')}`
+              };
+            } catch (err) {
+              console.error('Error creating thumbnail:', err);
+              return member;
+            }
+          }
+          return member;
+        }));
+        res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+        return res.status(200).json({ success: true, members: optimizedMembers });
+      }
+      
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
       res.status(200).json({ success: true, members });
     } catch (error) {
       console.error('Fetch error:', error);

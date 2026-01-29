@@ -88,8 +88,32 @@ export default function Sub(){
     }, []);
 
     const fetchMembers = async () => {
+        // Check cache first
+        const cacheKey = 'sub_members_v1';
+        const cacheTimeKey = 'sub_members_time_v1';
+        const cacheExpiry = 30 * 60 * 1000; // 30 minutes
+        
         try {
-            const response = await fetch('/api/exco?type=sub');
+            const cachedData = localStorage.getItem(cacheKey);
+            const cachedTime = localStorage.getItem(cacheTimeKey);
+            
+            if (cachedData && cachedTime) {
+                const age = Date.now() - parseInt(cachedTime);
+                if (age < cacheExpiry) {
+                    // Use cached data
+                    const dbMembers = JSON.parse(cachedData);
+                    setCards(dbMembers);
+                    setLoading(false);
+                    return;
+                }
+            }
+        } catch (err) {
+            console.log('Cache read error:', err);
+        }
+        
+        try {
+            // Fetch with thumbnail parameter for smaller images
+            const response = await fetch('/api/exco?type=sub&thumbnail=true');
             const data = await response.json();
             
             if (data.success && data.members.length > 0) {
@@ -100,6 +124,14 @@ export default function Sub(){
                     img: member.image || '/placeholder.jpg',
                 }));
                 setCards(dbMembers);
+                
+                // Cache the data
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify(dbMembers));
+                    localStorage.setItem(cacheTimeKey, Date.now().toString());
+                } catch (err) {
+                    console.log('Cache write error:', err);
+                }
             } else {
                 // Database empty - show default static content
                 setCards(fallbackCards);
@@ -120,11 +152,14 @@ return(
         </div>
 
         {loading ? (
-            <div className="text-center text-white py-5">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-                <p className="mt-3">Loading sub committee members...</p>
+            <div className="exco-grid">
+                {[...Array(15)].map((_, index) => (
+                    <div key={index} className="cardy skeleton">
+                        <div className="skeleton-image"></div>
+                        <div className="skeleton-text skeleton-name"></div>
+                        <div className="skeleton-text skeleton-uni"></div>
+                    </div>
+                ))}
             </div>
         ) : (
             <div className="exco-grid">
@@ -136,8 +171,9 @@ return(
                                 src={card.img} 
                                 alt={card.name} 
                                 className="img-fluid member-img" 
-                                loading={index < 8 ? "eager" : "lazy"}
+                                loading={index < 6 ? "eager" : "lazy"}
                                 decoding="async"
+                                fetchpriority={index < 6 ? "high" : "auto"}
                                 onLoad={(e) => e.target.classList.add('loaded')}
                             />
                         </div>
@@ -203,6 +239,38 @@ return(
                 .namee{
                     color:#D4AF37;
                     padding:5px 0px;
+                }
+                
+                /* Skeleton Loading */
+                .skeleton {
+                    pointer-events: none;
+                }
+                
+                .skeleton-image {
+                    width: 100%;
+                    height: 150px;
+                    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                    border-radius: 1.5rem;
+                    margin-bottom: 15px;
+                }
+                
+                .skeleton-text {
+                    height: 16px;
+                    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                    border-radius: 4px;
+                    margin-bottom: 8px;
+                }
+                
+                .skeleton-name {
+                    width: 90%;
+                }
+                
+                .skeleton-uni {
+                    width: 70%;
                 }
             `}
         </style>
