@@ -1423,10 +1423,6 @@ export default function Admin() {
                           </div>
                         </div>
                       )}
-                            }}
-                          />
-                        </div>
-                      )}
 
                       <div className="col-12">
                         <div className="d-flex gap-2">

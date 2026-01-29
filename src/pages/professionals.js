@@ -30,6 +30,7 @@ export default function Professionals() {
 
   useEffect(() => {
     filterProfessionals();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, selectedExpertise, professionals]);
 
   const fetchProfessionals = async () => {
