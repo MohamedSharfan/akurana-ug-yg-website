@@ -106,9 +106,9 @@ export default function Posts() {
         <title>Community Posts - Latest News & Updates | Akurana UG & YG</title>
         <meta name="description" content="Stay updated with the latest news, events, and announcements from Akurana UG & YG. Community posts, event updates, and youth empowerment initiatives." />
         <meta name="keywords" content="Akurana news, youth events Sri Lanka, community updates, student announcements, educational programs, mentorship events, career workshops" />
-        <link rel="canonical" href="https://yourdomain.com/posts" />
+        <link rel="canonical" href="https://ugygakurana.lk/posts" />
         
-        <meta property="og:url" content="https://yourdomain.com/posts" />
+        <meta property="og:url" content="https://ugygakurana.lk/posts" />
         <meta property="og:title" content="Community Posts - Akurana UG & YG" />
         <meta property="og:description" content="Latest news, events, and announcements from our community." />
         

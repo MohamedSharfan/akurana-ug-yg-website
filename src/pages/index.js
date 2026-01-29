@@ -18,25 +18,25 @@ export default function Home() {
           <title>Akurana UG & YG - Student Mentorship & Career Guidance Sri Lanka</title>
           <meta name="description" content="Akurana Undergraduates & Young Graduates (UG&YG) - Premier youth organization providing free mentorship, career guidance, O/L & A/L support, and professional networking for students in Akurana, Sri Lanka. Join 500+ students and graduates building successful careers." />
           <meta name="keywords" content="ugyg, akuranaugyg, Akurana youth organization, student mentorship Sri Lanka, career guidance programs, O/L guidance, A/L guidance, professional network Sri Lanka, undergraduate community, young graduates Akurana, free education Sri Lanka, student empowerment" />
-          <link rel="canonical" href="https://yourdomain.com/" />
+          <link rel="canonical" href="https://ugygakurana.lk/" />
           
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://yourdomain.com/" />
+          <meta property="og:url" content="https://ugygakurana.lk/" />
           <meta property="og:site_name" content="Akurana UG & YG" />
           <meta property="og:title" content="Akurana UG & YG - Student Mentorship & Career Guidance" />
           <meta property="og:description" content="Join our community of 500+ undergraduates and young graduates. Access free mentorship, career guidance, exam support, and professional networking in Sri Lanka." />
-          <meta property="og:image" content="https://yourdomain.com/logo.png" />
+          <meta property="og:image" content="https://ugygakurana.lk/logo.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
           <meta property="og:locale" content="en_US" />
           
           {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:url" content="https://yourdomain.com/" />
+          <meta name="twitter:url" content="https://ugygakurana.lk/" />
           <meta name="twitter:title" content="Akurana UG & YG - Student Mentorship & Career Guidance" />
           <meta name="twitter:description" content="Empowering students through mentorship, career guidance, and professional networking in Sri Lanka." />
-          <meta name="twitter:image" content="https://yourdomain.com/logo.png" />
+          <meta name="twitter:image" content="https://ugygakurana.lk/logo.png" />
           
           {/* Additional SEO */}
           <meta name="theme-color" content="#2D58FF" />
@@ -51,8 +51,8 @@ export default function Home() {
               "@type": "Organization",
               "name": "Akurana Undergraduates & Young Graduates",
               "alternateName": ["Akurana UG & YG", "UG&YG", "UGYG"],
-              "url": "https://yourdomain.com",
-              "logo": "https://yourdomain.com/logo.png",
+              "url": "https://ugygakurana.lk",
+              "logo": "https://ugygakurana.lk/logo.png",
               "description": "Youth empowerment organization providing free mentorship, career guidance, O/L & A/L exam support, and professional networking opportunities for students in Akurana, Sri Lanka.",
               "foundingDate": "2020",
               "address": {
@@ -84,7 +84,7 @@ export default function Home() {
               "@context": "https://schema.org",
               "@type": "EducationalOrganization",
               "name": "Akurana UG & YG",
-              "url": "https://yourdomain.com",
+              "url": "https://ugygakurana.lk",
               "description": "Non-profit educational organization offering free mentorship and career development programs",
               "hasOfferCatalog": {
                 "@type": "OfferCatalog",

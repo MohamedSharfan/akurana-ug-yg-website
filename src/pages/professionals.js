@@ -110,9 +110,9 @@ export default function Professionals() {
         <title>Professional Network - Connect with Experts | Akurana UG & YG</title>
         <meta name="description" content="Connect with experienced professionals across various fields including Software Engineering, Medicine, Engineering, Law, Business, and more. Network and grow your career in Sri Lanka." />
         <meta name="keywords" content="professional network Sri Lanka, career mentors, software engineers Sri Lanka, doctors Sri Lanka, lawyers Sri Lanka, business professionals, engineering professionals, networking opportunities" />
-        <link rel="canonical" href="https://yourdomain.com/professionals" />
+        <link rel="canonical" href="https://ugygakurana.lk/professionals" />
         
-        <meta property="og:url" content="https://yourdomain.com/professionals" />
+        <meta property="og:url" content="https://ugygakurana.lk/professionals" />
         <meta property="og:title" content="Professional Network - Akurana UG & YG" />
         <meta property="og:description" content="Connect with experienced professionals and grow your career." />
         
