@@ -1,0 +1,24 @@
+{
+  "name": "Akurana UG & YG",
+  "short_name": "UGYG",
+  "description": "Student mentorship and career guidance platform",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#2D58FF",
+  "background_color": "#0a0a0a",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}
