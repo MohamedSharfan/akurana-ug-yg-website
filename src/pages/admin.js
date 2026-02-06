@@ -372,8 +372,17 @@ export default function Admin() {
   // Professional handlers
   const fetchProfessionals = async () => {
     try {
-      const response = await fetch('/api/professionals');
+      // Add cache busting timestamp to force fresh data
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/professionals?_t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
       const data = await response.json();
+      console.log('Fetched professionals:', data);
       if (data.success) {
         setProfessionals(data.professionals);
       }
@@ -442,6 +451,9 @@ export default function Admin() {
         setProfFile(null);
         setProfPreview(null);
         setEditingProfessional(null);
+        // Clear cache so the network page updates
+        localStorage.removeItem('professionals_v1');
+        localStorage.removeItem('professionals_time_v1');
         fetchProfessionals();
       } else {
         setProfMessage('Error: ' + data.error);
@@ -471,20 +483,31 @@ export default function Admin() {
   const handleDeleteProfessional = async (id) => {
     if (!confirm('Are you sure you want to delete this professional?')) return;
 
+    console.log('Deleting professional with ID:', id);
+    
     try {
-      const response = await fetch('/api/professionals', {
+      const response = await fetch(`/api/professionals?id=${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
       });
 
       const data = await response.json();
+      console.log('Delete response:', data);
+      
       if (data.success) {
-        setProfMessage('Professional deleted successfully!');
-        fetchProfessionals();
+        setProfMessage('✅ Professional deleted successfully!');
+        // Clear cache so the network page updates
+        localStorage.removeItem('professionals_v1');
+        localStorage.removeItem('professionals_time_v1');
+        // Refresh the list immediately
+        await fetchProfessionals();
+        // Force re-render by clearing message after a delay
+        setTimeout(() => setProfMessage(''), 3000);
+      } else {
+        setProfMessage('❌ Error: ' + (data.error || 'Failed to delete'));
       }
     } catch (error) {
-      setProfMessage('Error: ' + error.message);
+      console.error('Delete error:', error);
+      setProfMessage('❌ Error: ' + error.message);
     }
   };
 
@@ -1080,16 +1103,93 @@ export default function Admin() {
                           }}
                         >
                           <option value="">Select Field</option>
-                          <option value="Software Engineering">Software Engineering</option>
-                          <option value="Data Science">Data Science</option>
-                          <option value="Business">Business</option>
-                          <option value="Medicine">Medicine</option>
-                          <option value="Engineering">Engineering</option>
-                          <option value="Education">Education</option>
-                          <option value="Finance">Finance</option>
-                          <option value="Marketing">Marketing</option>
-                          <option value="Law">Law</option>
-                          <option value="Other">Other</option>
+                          <optgroup label="Information Technology">
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Data Science & AI">Data Science & AI</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile App Development">Mobile App Development</option>
+                            <option value="DevOps & Cloud">DevOps & Cloud</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="IT Support & Networking">IT Support & Networking</option>
+                          </optgroup>
+                          <optgroup label="Healthcare & Medicine">
+                            <option value="Medical Doctor">Medical Doctor</option>
+                            <option value="Nursing">Nursing</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="Dentistry">Dentistry</option>
+                            <option value="Physiotherapy">Physiotherapy</option>
+                            <option value="Medical Laboratory">Medical Laboratory</option>
+                            <option value="Public Health">Public Health</option>
+                          </optgroup>
+                          <optgroup label="Engineering">
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Electronic Engineering">Electronic Engineering</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="Construction Management">Construction Management</option>
+                          </optgroup>
+                          <optgroup label="Business & Finance">
+                            <option value="Accounting & Auditing">Accounting & Auditing</option>
+                            <option value="Banking & Finance">Banking & Finance</option>
+                            <option value="Business Management">Business Management</option>
+                            <option value="Marketing & Sales">Marketing & Sales</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Entrepreneurship">Entrepreneurship</option>
+                            <option value="Supply Chain Management">Supply Chain Management</option>
+                            <option value="Investment & Trading">Investment & Trading</option>
+                          </optgroup>
+                          <optgroup label="Legal & Governance">
+                            <option value="Law & Legal Practice">Law & Legal Practice</option>
+                            <option value="Public Administration">Public Administration</option>
+                            <option value="Policy Analysis">Policy Analysis</option>
+                            <option value="NGO & Development">NGO & Development</option>
+                          </optgroup>
+                          <optgroup label="Education & Research">
+                            <option value="Teaching & Lecturing">Teaching & Lecturing</option>
+                            <option value="Educational Administration">Educational Administration</option>
+                            <option value="Research & Development">Research & Development</option>
+                            <option value="Academic Writing">Academic Writing</option>
+                          </optgroup>
+                          <optgroup label="Agriculture & Environment">
+                            <option value="Agriculture & Farming">Agriculture & Farming</option>
+                            <option value="Agricultural Engineering">Agricultural Engineering</option>
+                            <option value="Environmental Science">Environmental Science</option>
+                            <option value="Veterinary Science">Veterinary Science</option>
+                            <option value="Forestry">Forestry</option>
+                          </optgroup>
+                          <optgroup label="Tourism & Hospitality">
+                            <option value="Hotel Management">Hotel Management</option>
+                            <option value="Tourism Management">Tourism Management</option>
+                            <option value="Event Management">Event Management</option>
+                            <option value="Culinary Arts">Culinary Arts</option>
+                          </optgroup>
+                          <optgroup label="Creative & Media">
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="Content Writing">Content Writing</option>
+                            <option value="Journalism">Journalism</option>
+                            <option value="Photography & Videography">Photography & Videography</option>
+                            <option value="Digital Marketing">Digital Marketing</option>
+                            <option value="Social Media Management">Social Media Management</option>
+                          </optgroup>
+                          <optgroup label="Science & Laboratory">
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Biotechnology">Biotechnology</option>
+                            <option value="Mathematics & Statistics">Mathematics & Statistics</option>
+                          </optgroup>
+                          <optgroup label="Other Professions">
+                            <option value="Architecture">Architecture</option>
+                            <option value="Quantity Surveying">Quantity Surveying</option>
+                            <option value="Logistics & Transport">Logistics & Transport</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Insurance">Insurance</option>
+                            <option value="Security Services">Security Services</option>
+                            <option value="Other">Other</option>
+                          </optgroup>
                         </select>
                       </div>
 

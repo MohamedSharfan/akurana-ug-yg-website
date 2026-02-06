@@ -12,19 +12,93 @@ export default function Professionals() {
 
   const expertiseAreas = [
     'All',
+    // Information Technology
     'Software Engineering',
-    'Data Science',
-    'Business',
-    'Medicine',
-    'Engineering',
-    'Education',
-    'Finance',
-    'Marketing',
-    'Law',
+    'Data Science & AI',
+    'Cybersecurity',
+    'Web Development',
+    'Mobile App Development',
+    'DevOps & Cloud',
+    'UI/UX Design',
+    'IT Support & Networking',
+    // Healthcare & Medicine
+    'Medical Doctor',
+    'Nursing',
+    'Pharmacy',
+    'Dentistry',
+    'Physiotherapy',
+    'Medical Laboratory',
+    'Public Health',
+    // Engineering
+    'Civil Engineering',
+    'Mechanical Engineering',
+    'Electrical Engineering',
+    'Electronic Engineering',
+    'Computer Engineering',
+    'Chemical Engineering',
+    'Construction Management',
+    // Business & Finance
+    'Accounting & Auditing',
+    'Banking & Finance',
+    'Business Management',
+    'Marketing & Sales',
+    'Human Resources',
+    'Entrepreneurship',
+    'Supply Chain Management',
+    'Investment & Trading',
+    // Legal & Governance
+    'Law & Legal Practice',
+    'Public Administration',
+    'Policy Analysis',
+    'NGO & Development',
+    // Education & Research
+    'Teaching & Lecturing',
+    'Educational Administration',
+    'Research & Development',
+    'Academic Writing',
+    // Agriculture & Environment
+    'Agriculture & Farming',
+    'Agricultural Engineering',
+    'Environmental Science',
+    'Veterinary Science',
+    'Forestry',
+    // Tourism & Hospitality
+    'Hotel Management',
+    'Tourism Management',
+    'Event Management',
+    'Culinary Arts',
+    // Creative & Media
+    'Graphic Design',
+    'Content Writing',
+    'Journalism',
+    'Photography & Videography',
+    'Digital Marketing',
+    'Social Media Management',
+    // Science & Laboratory
+    'Chemistry',
+    'Physics',
+    'Biology',
+    'Biotechnology',
+    'Mathematics & Statistics',
+    // Other Professions
+    'Architecture',
+    'Quantity Surveying',
+    'Logistics & Transport',
+    'Real Estate',
+    'Insurance',
+    'Security Services',
     'Other'
   ];
 
   useEffect(() => {
+    // Clear cache if refresh parameter is present
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('refresh') === 'true') {
+        localStorage.removeItem('professionals_v1');
+        localStorage.removeItem('professionals_time_v1');
+      }
+    }
     fetchProfessionals();
   }, []);
 
@@ -37,7 +111,7 @@ export default function Professionals() {
     // Check cache first
     const cacheKey = 'professionals_v1';
     const cacheTimeKey = 'professionals_time_v1';
-    const cacheExpiry = 30 * 60 * 1000; // 30 minutes
+    const cacheExpiry = 2 * 60 * 1000; // 2 minutes (reduced for faster updates)
     
     try {
       const cachedData = localStorage.getItem(cacheKey);
@@ -51,6 +125,18 @@ export default function Professionals() {
           setProfessionals(data);
           setFilteredProfessionals(data);
           setLoading(false);
+          
+          // Fetch fresh data in background to update cache
+          fetch('/api/professionals?thumbnail=true')
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                localStorage.setItem(cacheKey, JSON.stringify(data.professionals));
+                localStorage.setItem(cacheTimeKey, Date.now().toString());
+              }
+            })
+            .catch(err => console.log('Background fetch error:', err));
+          
           return;
         }
       }
@@ -207,7 +293,7 @@ export default function Professionals() {
                       className="prof-image"
                       loading={index < 4 ? "eager" : "lazy"}
                       decoding="async"
-                      fetchpriority={index < 4 ? "high" : "auto"}
+                      fetchPriority={index < 4 ? "high" : "auto"}
                       onLoad={(e) => e.target.classList.add('loaded')}
                     />
                   </div>

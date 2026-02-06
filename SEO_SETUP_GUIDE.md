@@ -3,6 +3,7 @@
 ## ✅ Already Implemented
 
 ### 1. **Meta Tags & Structured Data**
+
 - ✅ Comprehensive meta tags in all pages
 - ✅ Open Graph tags for social media sharing
 - ✅ Twitter Card tags
@@ -11,6 +12,7 @@
 - ✅ Mobile optimization tags
 
 ### 2. **Technical SEO**
+
 - ✅ Sitemap.xml (dynamic generation)
 - ✅ Robots.txt
 - ✅ Canonical URLs
@@ -21,6 +23,7 @@
 ## 🔧 Action Required
 
 ### 1. **Google Search Console Setup**
+
 **Priority: HIGH**
 
 1. Go to [Google Search Console](https://search.google.com/search-console)
@@ -30,14 +33,17 @@
    ```javascript
    <meta name="google-site-verification" content="YOUR_CODE_HERE" />
    ```
+
    - **Domain DNS**: Add TXT record to your domain DNS
 4. Submit your sitemap: `https://yourdomain.com/api/sitemap.xml`
 5. Enable URL inspection and request indexing for important pages
 
 ### 2. **Update Domain URLs**
+
 **Priority: HIGH**
 
 Replace `https://yourdomain.com` with your actual domain in:
+
 - `/src/pages/_document.js`
 - `/src/pages/index.js`
 - `/src/pages/posts.js`
@@ -47,15 +53,18 @@ Replace `https://yourdomain.com` with your actual domain in:
 - `/src/pages/api/sitemap.xml.js`
 
 **Search & Replace:**
+
 ```bash
 Find: https://yourdomain.com
 Replace: https://your-actual-domain.com
 ```
 
 ### 3. **Social Media Setup**
+
 **Priority: MEDIUM**
 
 Update social media links in `/src/pages/index.js`:
+
 ```javascript
 "sameAs": [
   "https://facebook.com/akuranaugyg",  // Your actual Facebook page
@@ -65,6 +74,7 @@ Update social media links in `/src/pages/index.js`:
 ```
 
 ### 4. **Google Analytics Setup**
+
 **Priority: MEDIUM**
 
 1. Create Google Analytics 4 property
@@ -85,6 +95,7 @@ Update social media links in `/src/pages/index.js`:
 ```
 
 ### 5. **Bing Webmaster Tools**
+
 **Priority: LOW-MEDIUM**
 
 1. Go to [Bing Webmaster Tools](https://www.bing.com/webmasters)
@@ -92,6 +103,7 @@ Update social media links in `/src/pages/index.js`:
 3. Submit sitemap: `https://yourdomain.com/api/sitemap.xml`
 
 ### 6. **Create High-Quality Content**
+
 **Priority: HIGH**
 
 - ✅ Add regular blog posts/news updates
@@ -101,6 +113,7 @@ Update social media links in `/src/pages/index.js`:
 - ✅ Create engaging meta descriptions
 
 ### 7. **Build Backlinks**
+
 **Priority: MEDIUM**
 
 - Submit to educational directories in Sri Lanka
@@ -110,6 +123,7 @@ Update social media links in `/src/pages/index.js`:
 - Guest posting on relevant blogs
 
 ### 8. **Local SEO Enhancement**
+
 **Priority: HIGH for local visibility**
 
 1. Create Google Business Profile
@@ -121,6 +135,7 @@ Update social media links in `/src/pages/index.js`:
 ### 9. **Performance Monitoring**
 
 Track these metrics:
+
 - Google PageSpeed Insights score (aim for 90+)
 - Core Web Vitals (LCP, FID, CLS)
 - Search Console impressions and clicks
@@ -129,6 +144,7 @@ Track these metrics:
 ## 📊 SEO Best Practices Checklist
 
 ### On-Page SEO
+
 - [x] Title tags (50-60 characters)
 - [x] Meta descriptions (150-160 characters)
 - [x] Header hierarchy (H1, H2, H3)
@@ -140,6 +156,7 @@ Track these metrics:
 - [x] Image optimization
 
 ### Off-Page SEO
+
 - [ ] Backlink building
 - [ ] Social media presence
 - [ ] Online reputation management
@@ -147,6 +164,7 @@ Track these metrics:
 - [ ] Community engagement
 
 ### Technical SEO
+
 - [x] XML sitemap
 - [x] Robots.txt
 - [x] Canonical URLs
@@ -158,6 +176,7 @@ Track these metrics:
 ## 🎯 Keywords to Target
 
 ### Primary Keywords:
+
 - "student mentorship Sri Lanka"
 - "career guidance programs Sri Lanka"
 - "O/L guidance Akurana"
@@ -165,6 +184,7 @@ Track these metrics:
 - "undergraduate community Sri Lanka"
 
 ### Secondary Keywords:
+
 - "free education support Sri Lanka"
 - "youth empowerment programs"
 - "professional networking students"
@@ -172,6 +192,7 @@ Track these metrics:
 - "career development Sri Lanka"
 
 ### Long-tail Keywords:
+
 - "free mentorship programs for students in Sri Lanka"
 - "how to get career guidance in Akurana"
 - "O/L exam preparation help near me"
@@ -204,6 +225,7 @@ Track these metrics:
 ## 📞 Need Help?
 
 If you need assistance with SEO setup:
+
 - Check Google Search Console Help Center
 - Join SEO communities on Reddit
 - Consider hiring an SEO specialist for advanced optimization
