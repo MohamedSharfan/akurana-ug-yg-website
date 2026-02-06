@@ -108,10 +108,10 @@ export default function Professionals() {
   }, [searchTerm, selectedExpertise, professionals]);
 
   const fetchProfessionals = async () => {
-    // Check cache first
-    const cacheKey = 'professionals_v1';
-    const cacheTimeKey = 'professionals_time_v1';
-    const cacheExpiry = 2 * 60 * 1000; // 2 minutes (reduced for faster updates)
+    // Use version-based cache key for better control
+    const cacheKey = 'professionals_data_v2';
+    const cacheTimeKey = 'professionals_time_v2';
+    const cacheExpiry = 30 * 1000; // 30 seconds for faster updates
     
     try {
       const cachedData = localStorage.getItem(cacheKey);
@@ -126,13 +126,19 @@ export default function Professionals() {
           setFilteredProfessionals(data);
           setLoading(false);
           
-          // Fetch fresh data in background to update cache
-          fetch('/api/professionals?thumbnail=true')
+          // Always fetch fresh data in background to keep cache updated
+          fetch('/api/professionals?thumbnail=true', {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+          })
             .then(res => res.json())
             .then(data => {
-              if (data.success) {
+              if (data.success && JSON.stringify(data.professionals) !== cachedData) {
+                // Update cache and state if data changed
                 localStorage.setItem(cacheKey, JSON.stringify(data.professionals));
                 localStorage.setItem(cacheTimeKey, Date.now().toString());
+                setProfessionals(data.professionals);
+                setFilteredProfessionals(data.professionals);
               }
             })
             .catch(err => console.log('Background fetch error:', err));
@@ -145,7 +151,10 @@ export default function Professionals() {
     }
     
     try {
-      const response = await fetch('/api/professionals?thumbnail=true');
+      const response = await fetch('/api/professionals?thumbnail=true', {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       const data = await response.json();
       if (data.success) {
         setProfessionals(data.professionals);
