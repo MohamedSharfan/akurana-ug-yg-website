@@ -451,11 +451,9 @@ export default function Admin() {
         setProfFile(null);
         setProfPreview(null);
         setEditingProfessional(null);
-        // Clear all cache versions so the network page updates
+        // Clear cache so the network page updates
         localStorage.removeItem('professionals_v1');
         localStorage.removeItem('professionals_time_v1');
-        localStorage.removeItem('professionals_data_v2');
-        localStorage.removeItem('professionals_time_v2');
         fetchProfessionals();
       } else {
         setProfMessage('Error: ' + data.error);
@@ -497,11 +495,9 @@ export default function Admin() {
       
       if (data.success) {
         setProfMessage('✅ Professional deleted successfully!');
-        // Clear all cache versions so the network page updates
+        // Clear cache so the network page updates
         localStorage.removeItem('professionals_v1');
         localStorage.removeItem('professionals_time_v1');
-        localStorage.removeItem('professionals_data_v2');
-        localStorage.removeItem('professionals_time_v2');
         // Refresh the list immediately
         await fetchProfessionals();
         // Force re-render by clearing message after a delay
@@ -1229,7 +1225,6 @@ export default function Admin() {
                             color: 'white',
                           }}
                         />
-                        <small className="text-white-50">Optional - Leave empty if not available</small>
                       </div>
 
                       <div className="col-md-4 mb-3">
@@ -1247,7 +1242,6 @@ export default function Admin() {
                             color: 'white',
                           }}
                         />
-                        <small className="text-white-50">Optional - Leave empty if not available</small>
                       </div>
 
                       <div className="col-md-4 mb-3">
@@ -1265,7 +1259,6 @@ export default function Admin() {
                             color: 'white',
                           }}
                         />
-                        <small className="text-white-50">Optional - Leave empty if not available</small>
                       </div>
 
                       <div className="col-12 mb-3">

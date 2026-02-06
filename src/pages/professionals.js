@@ -319,41 +319,45 @@ export default function Professionals() {
                     {prof.bio && (
                       <p className="prof-bio">{prof.bio}</p>
                     )}
-                    <div className="prof-actions">
-                      {prof.linkedin && (
-                        <a
-                          href={prof.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="connect-btn linkedin-btn"
-                        >
-                          <i className="bi bi-linkedin me-2"></i>
-                          Connect on LinkedIn
-                        </a>
-                      )}
-                      <div className="social-links">
-                        {prof.whatsapp && (
+                    {(prof.linkedin || prof.whatsapp || prof.email) && (
+                      <div className="prof-actions">
+                        {prof.linkedin && (
                           <a
-                            href={`https://wa.me/${prof.whatsapp.replace(/[^0-9]/g, '')}`}
+                            href={prof.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="social-link"
-                            title="WhatsApp"
+                            className="connect-btn linkedin-btn"
                           >
-                            <i className="bi bi-whatsapp"></i>
+                            <i className="bi bi-linkedin me-2"></i>
+                            Connect on LinkedIn
                           </a>
                         )}
-                        {prof.email && (
-                          <a
-                            href={`mailto:${prof.email}`}
-                            className="social-link"
-                            title="Email"
-                          >
-                            <i className="bi bi-envelope"></i>
-                          </a>
+                        {(prof.whatsapp || prof.email) && (
+                          <div className="social-links">
+                            {prof.whatsapp && (
+                              <a
+                                href={`https://wa.me/${prof.whatsapp.replace(/[^0-9]/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="social-link"
+                                title="WhatsApp"
+                              >
+                                <i className="bi bi-whatsapp"></i>
+                              </a>
+                            )}
+                            {prof.email && (
+                              <a
+                                href={`mailto:${prof.email}`}
+                                className="social-link"
+                                title="Email"
+                              >
+                                <i className="bi bi-envelope"></i>
+                              </a>
+                            )}
+                          </div>
                         )}
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               ))}
